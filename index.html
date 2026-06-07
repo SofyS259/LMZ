@@ -8,11 +8,17 @@
   <body>
     <a-scene background="color: #F0F0F0;">
       
-      <!-- Освещение -->
-      <!-- Общий свет -->
-      <!-- Мягкое освещение для закрытой комнаты -->
-      <a-light type="ambient" color="#ffffff" intensity="1.2"></a-light>
-      <a-light type="hemisphere" color="#ffffff" groundColor="#444444" intensity="0.8"></a-light>
+      <!-- Основное освещение -->
+      <a-light type="ambient" color="#ffffff" intensity="0.8"></a-light>
+
+      <!-- Направленный свет (как солнце через окно) -->
+      <a-light type="directional" position="2 3 2" intensity="1.2" color="#ffffff"></a-light>
+      <a-light type="directional" position="-2 3 -2" intensity="0.6" color="#ffffff"></a-light>
+
+      <!-- Точечные лампы по комнате -->
+      <a-light type="point" position="0 2.5 0" intensity="1" distance="12" color="#ffffff"></a-light>
+      <a-light type="point" position="-4 2.5 -4" intensity="0.8" distance="10" color="#fff5ee"></a-light>
+      <a-light type="point" position="4 2.5 4" intensity="0.8" distance="10" color="#fff5ee"></a-light>
       
       <!-- Модели -->
       <a-entity gltf-model="url(1ploski.glb)" position="0 0 -5"></a-entity>
