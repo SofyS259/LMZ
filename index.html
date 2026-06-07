@@ -10,12 +10,9 @@
       
       <!-- Освещение -->
       <!-- Общий свет -->
-      <a-light type="ambient" color="#ffffff" intensity="0.8"></a-light>
-
-      <!-- Точечные лампы (расставь по координатам комнаты) -->
-      <a-light type="point" position="0 2.5 0" intensity="1.5" distance="10" color="#ffffff"></a-light>
-      <a-light type="point" position="-3 2.5 -3" intensity="1" distance="8" color="#ffeedd"></a-light>
-      <a-light type="point" position="3 2.5 3" intensity="1" distance="8" color="#ffeedd"></a-light>
+      <!-- Мягкое освещение для закрытой комнаты -->
+      <a-light type="ambient" color="#ffffff" intensity="1.2"></a-light>
+      <a-light type="hemisphere" color="#ffffff" groundColor="#444444" intensity="0.8"></a-light>
       
       <!-- Модели -->
       <a-entity gltf-model="url(1ploski.glb)" position="0 0 -5"></a-entity>
