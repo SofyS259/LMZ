@@ -8,8 +8,8 @@
   <body>
     <a-scene background="color: #F0F0F0;">
       
-      <a-scene background="color: #F0F0F0;" 
-          environment="preset: default; lighting: three; shadow: true">
+      <a-light type="ambient" color="#ffffff" intensity="1.0"></a-light>
+      <a-light type="hemisphere" color="#ffffff" groundColor="#888888" intensity="0.8"></a-light>
       
       <!-- Модели -->
       <a-entity gltf-model="url(1ploski.glb)" position="0 0 -5"></a-entity>
