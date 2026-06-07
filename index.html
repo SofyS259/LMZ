@@ -8,14 +8,22 @@
   <body>
     <a-scene background="color: #F0F0F0;">
       
-      <!-- Только базовый ambient -->
-      <a-light type="ambient" color="#ffffff" intensity="0.4"></a-light>
+      <!-- Базовый ambient (ярче) -->
+      <a-light type="ambient" color="#ffffff" intensity="0.8"></a-light>
 
-      <!-- Несколько точечных ламп -->
-      <a-light type="point" position="0 7 0" intensity="0.5" distance="8" color="#ffffff" decay="2"></a-light>
-      <a-light type="point" position="0 7 -15" intensity="0.5" distance="8" color="#ffffff" decay="2"></a-light>
-      <a-light type="point" position="0 7 -30" intensity="0.5" distance="8" color="#ffffff" decay="2"></a-light>
-      <a-light type="point" position="0 7 -45" intensity="0.5" distance="8" color="#ffffff" decay="2"></a-light>
+      <!-- Точечные лампы (больше радиус) -->
+      <a-light type="point" position="0 7 0" intensity="1.0" distance="15" color="#ffffff" decay="1.5"></a-light>
+      <a-light type="point" position="0 7 -15" intensity="1.0" distance="15" color="#ffffff" decay="1.5"></a-light>
+      <a-light type="point" position="0 7 -30" intensity="1.0" distance="15" color="#ffffff" decay="1.5"></a-light>
+      <a-light type="point" position="0 7 -45" intensity="1.0" distance="15" color="#ffffff" decay="1.5"></a-light>
+
+      <!-- Дополнительные лампы по бокам -->
+      <a-light type="point" position="-8 7 -10" intensity="0.8" distance="12" color="#ffffff" decay="1.5"></a-light>
+      <a-light type="point" position="8 7 -10" intensity="0.8" distance="12" color="#ffffff" decay="1.5"></a-light>
+      <a-light type="point" position="-8 7 -25" intensity="0.8" distance="12" color="#ffffff" decay="1.5"></a-light>
+      <a-light type="point" position="8 7 -25" intensity="0.8" distance="12" color="#ffffff" decay="1.5"></a-light>
+      <a-light type="point" position="-8 7 -40" intensity="0.8" distance="12" color="#ffffff" decay="1.5"></a-light>
+      <a-light type="point" position="8 7 -40" intensity="0.8" distance="12" color="#ffffff" decay="1.5"></a-light>
       
       <!-- Модели -->
       <a-entity gltf-model="url(1ploski.glb)" position="0 0 -5"></a-entity>
