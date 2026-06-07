@@ -8,51 +8,14 @@
   <body>
     <a-scene background="color: #F0F0F0;">
       
-      <!-- ОБЩИЙ СВЕТ -->
-      <a-light type="ambient" color="#ffffff" intensity="1.3"></a-light>
-      <a-light type="hemisphere" color="#ffffff" groundColor="#888888" intensity="0.4"></a-light>
+      <!-- Только базовый ambient -->
+      <a-light type="ambient" color="#ffffff" intensity="0.4"></a-light>
 
-      <!-- СТАРТОВАЯ ЗОНА (желтый крест, Y=1.9м) -->
-      <a-light type="point" position="0 7 2" intensity="1.2" distance="10" color="#ffffff" decay="2"></a-light>
-      <a-light type="point" position="-2 7 0" intensity="0.8" distance="6" color="#fff8f0" decay="2"></a-light>
-
-      <!-- ЦЕНТРАЛЬНЫЙ КОРИДОР (вдоль оси Z) -->
-      <!-- Секция 1 -->
-      <a-light type="point" position="0 7 -8" intensity="1.0" distance="12" color="#ffffff" decay="2"></a-light>
-
-      <!-- ДВЕРНОЙ ПРОЁМ 1 (голубое, примерно Z=-16м) -->
-      <a-light type="point" position="0 7 -16" intensity="1.5" distance="8" color="#ffffff" decay="2"></a-light>
-
-      <!-- Секция 2 -->
-      <a-light type="point" position="0 7 -24" intensity="1.0" distance="12" color="#ffffff" decay="2"></a-light>
-
-      <!-- ДВЕРНОЙ ПРОЁМ 2 (голубое, примерно Z=-32м) -->
-      <a-light type="point" position="0 7 -32" intensity="1.5" distance="8" color="#ffffff" decay="2"></a-light>
-
-      <!-- Секция 3 -->
-      <a-light type="point" position="0 7 -40" intensity="1.0" distance="12" color="#ffffff" decay="2"></a-light>
-
-      <!-- ДВЕРНОЙ ПРОЁМ 3 (голубое, примерно Z=-48м) -->
-      <a-light type="point" position="0 7 -48" intensity="1.5" distance="8" color="#ffffff" decay="2"></a-light>
-
-      <!-- ЗАДНЯЯ КОМНАТА (где танк, Z=-54м) -->
-      <a-light type="point" position="0 7 -54" intensity="1.2" distance="14" color="#ffffff" decay="2"></a-light>
-
-      <!-- ЛЕВАЯ КОМНАТА (ширина ~16м, X=-8м) -->
-      <a-light type="point" position="-8 7 -10" intensity="0.9" distance="10" color="#fff8f0" decay="2"></a-light>
-      <a-light type="point" position="-8 7 -25" intensity="0.9" distance="10" color="#fff8f0" decay="2"></a-light>
-      <a-light type="point" position="-8 7 -40" intensity="0.9" distance="10" color="#fff8f0" decay="2"></a-light>
-
-      <!-- ПРАВАЯ КОМНАТА (ширина ~15м, X=+8м) -->
-      <a-light type="point" position="8 7 -10" intensity="0.9" distance="10" color="#fff8f0" decay="2"></a-light>
-      <a-light type="point" position="8 7 -25" intensity="0.9" distance="10" color="#fff8f0" decay="2"></a-light>
-      <a-light type="point" position="8 7 -40" intensity="0.9" distance="10" color="#fff8f0" decay="2"></a-light>
-
-      <!-- ФАЛЬШ-СТЕНЫ (зеленое, подсветка сверху) -->
-      <a-light type="point" position="-8 7.5 -5" intensity="0.5" distance="5" color="#ffffff" decay="2"></a-light>
-      <a-light type="point" position="-8 7.5 -15" intensity="0.5" distance="5" color="#ffffff" decay="2"></a-light>
-      <a-light type="point" position="8 7.5 -20" intensity="0.5" distance="5" color="#ffffff" decay="2"></a-light>
-      <a-light type="point" position="8 7.5 -35" intensity="0.5" distance="5" color="#ffffff" decay="2"></a-light>
+      <!-- Несколько точечных ламп -->
+      <a-light type="point" position="0 7 0" intensity="0.5" distance="8" color="#ffffff" decay="2"></a-light>
+      <a-light type="point" position="0 7 -15" intensity="0.5" distance="8" color="#ffffff" decay="2"></a-light>
+      <a-light type="point" position="0 7 -30" intensity="0.5" distance="8" color="#ffffff" decay="2"></a-light>
+      <a-light type="point" position="0 7 -45" intensity="0.5" distance="8" color="#ffffff" decay="2"></a-light>
       
       <!-- Модели -->
       <a-entity gltf-model="url(1ploski.glb)" position="0 0 -5"></a-entity>
