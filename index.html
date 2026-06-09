@@ -8,11 +8,11 @@
   <body>
     <a-scene background="color: #F0F0F0;">
       
-      <a-light type="ambient" color="#ffffff" intensity="0.5"></a-light>
-      <a-light type="directional" position="1 2 1" intensity="1"></a-light>
-      <a-light type="directional" position="-1 2 -1" intensity="0.5"></a-light>
+      <!-- Базовое освещение -->
+      <a-light type="ambient" color="#ffffff" intensity="0.6"></a-light>
+      <a-light type="hemisphere" color="#ffffff" groundColor="#888888" intensity="0.4"></a-light>
       
-      <!-- Модели -->
+      <!-- Твои модели -->
       <a-entity gltf-model="url(1ploski.glb)" position="0 0 -5"></a-entity>
       <a-entity gltf-model="url(1yadra.glb)" position="0 0 -5"></a-entity>
       <a-entity gltf-model="url(2ploski.glb)" position="0 0 -5"></a-entity>
