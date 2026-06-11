@@ -8,7 +8,10 @@
   <body>
     <a-scene background="color: #F0F0F0;">
       
-    
+      <!-- Базовый свет -->
+      <a-light type="ambient" color="#ffffff" intensity="0.8"></a-light>
+      <a-light type="hemisphere" color="#ffffff" groundColor="#888888" intensity="0.6"></a-light>
+      
       <!-- Холл: окна (прожекторы) -->
       <a-light type="spot" position="4.772 2.589 4.393" angle="40" penumbra="0.7" intensity="2" distance="15" decay="1.5" color="#ffffff" target="0 0 0"></a-light>
       <a-light type="spot" position="-7.531 2.589 4.748" angle="40" penumbra="0.7" intensity="2" distance="15" decay="1.5" color="#ffffff" target="0 0 0"></a-light>
