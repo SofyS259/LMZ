@@ -8,22 +8,22 @@
   <body>
     <a-scene background="color: #F0F0F0;">
       
-      <!-- Базовое освещение -->
-     
-      
-      <!-- Точечные лампы -->
-      
+      <!-- Базовый свет (поярче) -->
+      <a-light type="ambient" color="#ffffff" intensity="0.8"></a-light>
+      <a-light type="hemisphere" color="#ffffff" groundColor="#888888" intensity="0.6"></a-light>
+    
+      <!-- Spot-лампы (прожекторы) -->
+      <a-light type="spot" position="4.772 2.589 4.393" angle="40" penumbra="0.7" intensity="2" distance="15" decay="1.5" color="#ffffff" target="0 0 0"></a-light>
+      <a-light type="spot" position="-7.531 2.589 4.748" angle="40" penumbra="0.7" intensity="2" distance="15" decay="1.5" color="#ffffff" target="0 0 0"></a-light>
 
-      <!-- Холл -->
-      <a-light type="spot" position="4.772 2.589 4.393" angle="40" penumbra="0.7" intensity="1" distance="2" decay="1" color="#ffffff"></a-light>
-      <a-light type="spot" position="-7.531 2.589 4.748" angle="40" penumbra="0.7" intensity="1" distance="2" decay="1" color="#ffffff"></a-light>
-      <a-light type="spot" position="3.977 8.526 2.367" angle="60" penumbra="0.5" intensity="1" distance="15" decay="2" color="#ffffff"></a-light>
-      <a-light type="spot" position="-4.806 5.706 0.403" angle="60" penumbra="0.5" intensity="1" distance="15" decay="2" color="#ffffff"></a-light>
-      <a-light type="spot" position="-6.137 6.916 -7.381" angle="60" penumbra="0.5" intensity="1" distance="15" decay="2" color="#ffffff"></a-light>
-      <a-light type="spot" position="-0.415 2.915 -6.664" angle="60" penumbra="0.5" intensity="1" distance="15" decay="2" color="#ffffff"></a-light>
-      <a-light type="spot" position="7.251 6.102 -7.652" angle="60" penumbra="0.5" intensity="1" distance="15" decay="2" color="#ffffff"></a-light>
-      <a-light type="spot" position="16.714 1.388 -15.661" angle="60" penumbra="0.5" intensity="1" distance="15" decay="2" color="#ffffff"></a-light>
-      <a-light type="spot" position="13.902 3.902 -5.047" angle="60" penumbra="0.5" intensity="1" distance="15" decay="1" color="#ffffff"></a-light>
+      <!-- Point-лампы (точечные) -->
+      <a-light type="point" position="3.977 8.526 2.367" intensity="1.5" distance="15" decay="1.5" color="#ffffff"></a-light>
+      <a-light type="point" position="-4.806 5.706 0.403" intensity="1.5" distance="15" decay="1.5" color="#ffffff"></a-light>
+      <a-light type="point" position="-6.137 6.916 -7.381" intensity="1.5" distance="15" decay="1.5" color="#ffffff"></a-light>
+      <a-light type="point" position="-0.415 2.915 -6.664" intensity="1.5" distance="15" decay="1.5" color="#ffffff"></a-light>
+      <a-light type="point" position="7.251 6.102 -7.652" intensity="1.5" distance="15" decay="1.5" color="#ffffff"></a-light>
+      <a-light type="point" position="16.714 1.388 -15.661" intensity="1.5" distance="15" decay="1.5" color="#ffffff"></a-light>
+      <a-light type="point" position="13.902 3.902 -5.047" intensity="1.5" distance="15" decay="1.5" color="#ffffff"></a-light>
 
       <!-- Зал 1 -->
       
