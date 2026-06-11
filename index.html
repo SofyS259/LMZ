@@ -4,9 +4,10 @@
     <meta charset="utf-8">
     <title>VR Museum</title>
     <script src="aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-physics-system@v4.2.2/dist/aframe-physics-system.min.js"></script>
   </head>
   <body>
-    <a-scene background="color: #F0F0F0;">
+    <a-scene background="color: #F0F0F0;" physics="debug: false">
       
       <!-- Базовый свет -->
       <a-light type="ambient" color="#ffffff" intensity="0.8"></a-light>
@@ -52,7 +53,6 @@
 
       
       <!-- Модели -->
-        <!-- 
       <a-entity gltf-model="url(1ploski.glb)" position="0 0 -5"></a-entity>
       <a-entity gltf-model="url(1yadra.glb)" position="0 0 -5"></a-entity>
       <a-entity gltf-model="url(2ploski.glb)" position="0 0 -5"></a-entity>
@@ -61,13 +61,13 @@
       <a-entity gltf-model="url(lable.glb)" position="0 0 -5"></a-entity>
       <a-entity gltf-model="url(rec.glb)" position="0 0 -5"></a-entity>
       <a-entity gltf-model="url(slav.glb)" position="0 0 -5"></a-entity>
-       -->
+      <!-- 
       <a-entity gltf-model="url(enime.glb)" position="0 0 -5"></a-entity>
-       <!-- 
+      -->
       <a-entity gltf-model="url(stena.glb)" position="0 0 -5"></a-entity>
       <a-entity gltf-model="url(stolb.glb)" position="0 0 -5"></a-entity>
       <a-entity gltf-model="url(tryu.glb)" position="0 0 -5"></a-entity>
-      -->
+    
       
       
     </a-scene>
