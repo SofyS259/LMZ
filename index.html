@@ -61,10 +61,10 @@
       </a-entity>
       
       <!-- Стены с физикой (невидимые) -->
-      <a-entity gltf-model="url(thndf.glb)" position="0 0 -5" static-body="shape: mesh; auto-restart: true" visible="false">
+      <a-entity gltf-model="url(thndf.glb)" position="0 0 -5" id="walls" visible="false">
       </a-entity>
-      
-      
+
+            
       <!-- Модели -->
       <!-- 
       <a-entity gltf-model="url(1ploski.glb)" position="0 0 -5"></a-entity>
@@ -86,5 +86,13 @@
       
       
     </a-scene>
+    
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        document.querySelector('#walls').addEventListener('model-loaded', function() {
+          this.setAttribute('static-body', 'shape: mesh');
+        });
+      });
+    </script>
   </body>
 </html>
