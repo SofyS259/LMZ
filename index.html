@@ -61,8 +61,26 @@
       </a-entity>
       
       <!-- Стены с физикой (невидимые) -->
-      <a-entity gltf-model="url(thndf.glb)" position="0 0 -5" id="walls" visible="false">
+      <a-entity gltf-model="url(thndf.glb)" position="0 0 -5" id="walls" static-body="shape: mesh" visible="true" material="opacity: 0.3; transparent: true">
       </a-entity>
+
+
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          var walls = document.querySelector('#walls');
+    
+          walls.addEventListener('model-loaded', function() {
+            console.log('✅ Модель стен загружена!');
+            console.log('Позиция игрока:', document.querySelector('#player').getAttribute('position'));
+            this.setAttribute('static-body', 'shape: mesh');
+            console.log('✅ Физика стен добавлена!');
+          });
+    
+          walls.addEventListener('loaded', function() {
+            console.log('🎮 Стены добавлены в сцену');
+          });
+        });
+      </script>
 
             
       <!-- Модели -->
