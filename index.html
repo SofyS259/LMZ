@@ -3,7 +3,9 @@
   <head>
     <meta charset="utf-8">
     <title>VR Museum</title>
-    <script src="aframe.min.js"></script>
+    <!-- Используем CDN для стабильности -->
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <!-- Физика -->
     <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-physics-system@v4.2.2/dist/aframe-physics-system.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@v7.5.1/dist/aframe-extras.min.js"></script>
   </head>
@@ -54,12 +56,17 @@
 
 
       <!-- Игрок с физикой -->
-      <a-entity id="player" position="0 1.6 5" kinematic-body="mass: 60" movement-controls="speed: 0.15; fly: false" collision-filter="collisionForces: false">
+      <a-entity id="player" position="0 1.6 5" 
+                kinematic-body="mass: 60" 
+                movement-controls="speed: 0.15; fly: false">
         <a-camera look-controls="pointerLockEnabled: false"></a-camera>
       </a-entity>
       
-      <!-- Невидимая стена с физикой -->
-      <a-entity gltf-model="url(thndf.glb)" position="0 0 -5" visible="false" static-body></a-entity>
+      <!-- Стены с физикой (невидимые) -->
+      <a-entity gltf-model="url(thndf.glb)" 
+                position="0 0 -5" 
+                static-body="shape: mesh; includeInertial: false; emitCollisionEvents: false"
+                visible="false"></a-entity>
       
       
       <!-- Модели -->
