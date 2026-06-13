@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8">
     <title>VR Museum</title>
-    <!-- Используем CDN для стабильности -->
-    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <!-- Локальный файл A-Frame -->
+    <script src="aframe.min.js"></script>
     <!-- Физика -->
     <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-physics-system@v4.2.2/dist/aframe-physics-system.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@v7.5.1/dist/aframe-extras.min.js"></script>
@@ -65,7 +65,7 @@
       <!-- Стены с физикой (невидимые) -->
       <a-entity gltf-model="url(thndf.glb)" 
                 position="0 0 -5" 
-                static-body="shape: mesh; includeInertial: false; emitCollisionEvents: false"
+                static-body="shape: mesh"
                 visible="false"></a-entity>
       
       
