@@ -3,8 +3,6 @@
   <head>
     <meta charset="utf-8">
     <title>VR Museum</title>
-    <!-- Рекомендуется использовать актуальную версию A-Frame, если ваш локальный файл устарел -->
-    <!-- <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script> -->
     <script src="aframe.min.js"></script>
   </head>
   <body>
@@ -51,15 +49,15 @@
       <a-light type="point" position="16.207 4.000 -39.665" intensity="1" distance="20" decay="1" color="#ffffff"></a-light>
       <a-light type="point" position="17.679 4.000 -60.540" intensity="1" distance="20" decay="1" color="#ffffff"></a-light>
 
-      <!-- Игрок с физикой и управлением -->
-      <a-entity id="player" position="0 0 -5" player-movement="speed: 0.1; radius: 0.5">
+      <!-- ВАЖНО: wasd-controls-enabled="false" отключает стандартное управление, которое ломало коллизии -->
+      <a-entity id="player" position="0 0 -5" wasd-controls-enabled="false" player-movement="speed: 0.05; radius: 0.4">
         <a-camera look-controls="pointerLockEnabled: true"></a-camera>
       </a-entity>
 
-      <!-- Невидимый пол с физикой -->
+      <!-- Невидимый пол -->
       <a-plane position="0 0 0" rotation="-90 0 0" width="200" height="200" static-body visible="false"></a-plane>
 
-      <!-- Стены с маркером wall-collider -->
+      <!-- Стены -->
       <a-box position="-19.018 2.672 -37.812" width="1" height="10" depth="55" wall-collider></a-box>
       <a-box position="33.877 2.672 -37.812" width="1" height="10" depth="55" wall-collider></a-box>
       <a-box position="7.857 2.672 -37.812" width="1" height="10" depth="55" wall-collider></a-box>
@@ -76,36 +74,51 @@
       <a-box position="26.872 2.672 -24.996" width="1" height="10" depth="15" rotation="0 90 0" wall-collider></a-box>
       <a-box position="26.984 2.672 -52.376" width="1" height="10" depth="15" rotation="0 90 0" wall-collider></a-box>
 
-      
+      <!-- Модели -->
+      <a-entity gltf-model="url(enime.glb)" position="0 0 -5"></a-entity>
       
     </a-scene>
 
     <script>
+      // Вспомогательная функция для гарантированного получения чисел из атрибутов A-Frame
+      function getVector3(el, attr) {
+        const val = el.getAttribute(attr);
+        if (typeof val === 'object' && val !== null && val.x !== undefined) {
+          return { x: parseFloat(val.x), y: parseFloat(val.y), z: parseFloat(val.z) };
+        }
+        if (typeof val === 'string') {
+          const parts = val.trim().split(/\s+/).map(parseFloat);
+          return { x: parts[0] || 0, y: parts[1] || 0, z: parts[2] || 0 };
+        }
+        return { x: 0, y: 0, z: 0 };
+      }
+
       AFRAME.registerComponent('player-movement', {
         schema: {
-          speed: { type: 'number', default: 0.1 },
-          radius: { type: 'number', default: 0.5 }
+          speed: { type: 'number', default: 0.05 }, // Снижена скорость для предотвращения "проскальзывания" (tunneling)
+          radius: { type: 'number', default: 0.4 }
         },
 
         init: function () {
           this.keys = { w: false, a: false, s: false, d: false, ArrowUp: false, ArrowLeft: false, ArrowDown: false, ArrowRight: false };
           this.walls = [];
           
-          // Обработка нажатий клавиш
           this.keyDownHandler = this.keyDownHandler.bind(this);
           this.keyUpHandler = this.keyUpHandler.bind(this);
           document.addEventListener('keydown', this.keyDownHandler);
           document.addEventListener('keyup', this.keyUpHandler);
 
-          // Сбор данных о стенах после загрузки сцены
           this.el.sceneEl.addEventListener('loaded', () => {
             const wallElements = document.querySelectorAll('[wall-collider]');
             this.walls = Array.from(wallElements).map(wall => {
+              const pos = getVector3(wall, 'position');
+              const rot = getVector3(wall, 'rotation');
               return {
-                position: wall.getAttribute('position'),
-                rotation: wall.getAttribute('rotation') || { x: 0, y: 0, z: 0 },
-                width: parseFloat(wall.getAttribute('width')) || 1,
-                depth: parseFloat(wall.getAttribute('depth')) || 1
+                x: pos.x,
+                z: pos.z,
+                rotY: rot.y * (Math.PI / 180), // Сразу переводим в радианы
+                halfW: (parseFloat(wall.getAttribute('width')) || 1) / 2,
+                halfD: (parseFloat(wall.getAttribute('depth')) || 1) / 2
               };
             });
           });
@@ -122,11 +135,11 @@
         tick: function () {
           if (this.walls.length === 0) return;
 
-          const currentPos = this.el.getAttribute('position');
+          const currentPos = getVector3(this.el, 'position');
           const camera = this.el.querySelector('a-camera');
-          const cameraRot = camera.getAttribute('rotation');
+          const cameraRot = getVector3(camera, 'rotation');
           
-          // Вычисляем направление движения на основе поворота камеры (только по оси Y)
+          // Вычисляем направление движения
           const yaw = cameraRot.y * (Math.PI / 180);
           let moveX = 0;
           let moveZ = 0;
@@ -148,59 +161,50 @@
             moveZ -= Math.sin(yaw) * this.data.speed;
           }
 
-          // Если движения нет, выходим
           if (moveX === 0 && moveZ === 0) return;
 
-          // Предсказываем следующую позицию
-          let nextPos = { x: currentPos.x + moveX, y: currentPos.y, z: currentPos.z + moveZ };
-          let collisionOccurred = false;
+          let nextX = currentPos.x + moveX;
+          let nextZ = currentPos.z + moveZ;
+          const r = this.data.radius;
 
-          // Проверка коллизий с каждой стеной
+          // Проверка коллизий
           for (let wall of this.walls) {
-            // 1. Переводим координаты игрока в локальное пространство стены
-            let dx = nextPos.x - wall.position.x;
-            let dz = nextPos.z - wall.position.z;
+            // 1. Вектор от центра стены до игрока
+            let dx = nextX - wall.x;
+            let dz = nextZ - wall.z;
 
-            // Поворачиваем точку на угол, обратный повороту стены
-            let rad = -wall.rotation.y * (Math.PI / 180);
-            let cos = Math.cos(rad);
-            let sin = Math.sin(rad);
-
+            // 2. Поворачиваем этот вектор в локальное пространство стены
+            let cos = Math.cos(-wall.rotY);
+            let sin = Math.sin(-wall.rotY);
             let localX = dx * cos - dz * sin;
             let localZ = dx * sin + dz * cos;
 
-            // 2. Проверяем пересечение с учетом радиуса игрока
-            let halfW = (wall.width / 2) + this.data.radius;
-            let halfD = (wall.depth / 2) + this.data.radius;
-
-            if (Math.abs(localX) < halfW && Math.abs(localZ) < halfD) {
-              collisionOccurred = true;
-
-              // 3. Разрешение коллизии: выталкиваем игрока по оси наименьшего пересечения
-              let overlapX = halfW - Math.abs(localX);
-              let overlapZ = halfD - Math.abs(localZ);
+            // 3. Проверка пересечения (AABB с учетом радиуса игрока)
+            if (Math.abs(localX) < (wall.halfW + r) && Math.abs(localZ) < (wall.halfD + r)) {
+              
+              // 4. Разрешение коллизии: выталкиваем по оси наименьшего проникновения
+              let overlapX = (wall.halfW + r) - Math.abs(localX);
+              let overlapZ = (wall.halfD + r) - Math.abs(localZ);
 
               if (overlapX < overlapZ) {
-                localX += (localX > 0 ? overlapX : -overlapX);
+                localX += (localX >= 0 ? overlapX : -overlapX);
               } else {
-                localZ += (localZ > 0 ? overlapZ : -overlapZ);
+                localZ += (localZ >= 0 ? overlapZ : -overlapZ);
               }
 
-              // 4. Переводим координаты обратно в мировое пространство
-              let invRad = -rad;
-              let invCos = Math.cos(invRad);
-              let invSin = Math.sin(invRad);
-
+              // 5. Обратный поворот в мировые координаты
+              let invCos = Math.cos(wall.rotY);
+              let invSin = Math.sin(wall.rotY);
               let worldX = localX * invCos - localZ * invSin;
               let worldZ = localX * invSin + localZ * invCos;
 
-              nextPos.x = wall.position.x + worldX;
-              nextPos.z = wall.position.z + worldZ;
+              nextX = wall.x + worldX;
+              nextZ = wall.z + worldZ;
             }
           }
 
-          // Применяем новую позицию (с коллизией или без нее)
-          this.el.setAttribute('position', nextPos);
+          // Применяем финальную позицию
+          this.el.setAttribute('position', { x: nextX, y: currentPos.y, z: nextZ });
         },
 
         remove: function () {
