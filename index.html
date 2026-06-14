@@ -6,11 +6,12 @@
     <!-- Локальный файл A-Frame -->
     <script src="aframe.min.js"></script>
     <!-- Физика -->
+    <script src="https://cdn.jsdelivr.net/gh/kripken/ammo.js@HEAD/builds/ammo.wasm.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-physics-system@v4.2.2/dist/aframe-physics-system.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@v7.5.1/dist/aframe-extras.min.js"></script>
   </head>
   <body>
-    <a-scene background="color: #F0F0F0;" physics="debug: false">
+    <a-scene background="color: #F0F0F0;" physics="debug: false; physics: ammo">
       
       <!-- Базовый свет -->
       <a-light type="ambient" color="#ffffff" intensity="0.8"></a-light>
@@ -56,8 +57,11 @@
 
 
       <!-- Игрок с физикой -->
-      <a-entity id="player" position="0 0 -5" kinematic-body="mass: 60; shape: sphere; radius: 0.5">
-        <a-camera look-controls="pointerLockEnabled: false" wasd-controls="speed: 0.15"></a-camera>
+      <a-entity id="player" position="0 0 -5" 
+          movement-controls="speed: 0.15" 
+          ammo-body="type: kinematic; mass: 60; linearSleepingThreshold: 0; angularSleepingThreshold: 0" 
+          ammo-shape="type: capsule; fit: manual; radius: 0.4; height: 1.6; offset: 0 0.8 0">
+      <a-camera position="0 1.6 0" look-controls="pointerLockEnabled: false"></a-camera>
       </a-entity>
 
       <!-- Невидимый пол с физикой -->
