@@ -102,75 +102,63 @@
       
     </a-scene>
       <script>
-AFRAME.registerComponent('player-movement', {
+AFRAME.registerComponent('wall-collision', {
   schema: {
-    speed: {type: 'number', default: 0.08},
-    radius: {type: 'number', default: 0.6}
+    radius: {type: 'number', default: 0.5}
   },
   
   init: function() {
-    this.keys = {};
-    this.raycaster = new THREE.Raycaster();
-    this.playerPos = new THREE.Vector3();
-    this.wallMeshes = [];
-    this.camera = this.el.querySelector('a-camera');
-    
-    window.addEventListener('keydown', (e) => this.keys[e.code] = true);
-    window.addEventListener('keyup', (e) => this.keys[e.code] = false);
-    
+    this.walls = [];
     this.el.sceneEl.addEventListener('loaded', () => {
-      const walls = document.querySelectorAll('[wall-collider]');
-      this.wallMeshes = Array.from(walls).map(w => w.object3D).filter(o => o);
+      const wallElements = document.querySelectorAll('[wall-collider]');
+      this.walls = Array.from(wallElements).map(wall => {
+        const pos = wall.getAttribute('position');
+        const rot = wall.getAttribute('rotation') || {x: 0, y: 0, z: 0};
+        const width = wall.getAttribute('width') || 1;
+        const height = wall.getAttribute('height') || 1;
+        const depth = wall.getAttribute('depth') || 1;
+        
+        return {
+          element: wall,
+          position: pos,
+          rotation: rot,
+          width: width,
+          height: height,
+          depth: depth
+        };
+      });
     });
   },
   
   tick: function() {
+    if (this.walls.length === 0) return;
+    
     const position = this.el.getAttribute('position');
-    const cameraRotation = this.camera.getAttribute('rotation');
+    const playerRadius = this.data.radius;
     
-    const yaw = cameraRotation.y * Math.PI / 180;
-    const forward = new THREE.Vector3(-Math.sin(yaw), 0, -Math.cos(yaw));
-    const right = new THREE.Vector3(Math.cos(yaw), 0, -Math.sin(yaw));
-    
-    const moveDir = new THREE.Vector3(0, 0, 0);
-    
-    if (this.keys['KeyW']) moveDir.add(forward);
-    if (this.keys['KeyS']) moveDir.sub(forward);
-    if (this.keys['KeyD']) moveDir.add(right);
-    if (this.keys['KeyA']) moveDir.sub(right);
-    
-    if (moveDir.length() > 0) {
-      moveDir.normalize().multiplyScalar(this.data.speed);
+    for (let wall of this.walls) {
+      const wallPos = wall.position;
+      const wallWidth = wall.width / 2;
+      const wallDepth = wall.depth / 2;
       
-      const newPos = {
-        x: position.x + moveDir.x,
-        y: position.y,
-        z: position.z + moveDir.z
-      };
+      const dx = Math.abs(position.x - wallPos.x);
+      const dz = Math.abs(position.z - wallPos.z);
       
-      this.playerPos.set(newPos.x, newPos.y + 1, newPos.z);
+      const minDistX = wallWidth + playerRadius;
+      const minDistZ = wallDepth + playerRadius;
       
-      const directions = [
-        new THREE.Vector3(1, 0, 0),
-        new THREE.Vector3(-1, 0, 0),
-        new THREE.Vector3(0, 0, 1),
-        new THREE.Vector3(0, 0, -1)
-      ];
-      
-      let canMove = true;
-      for (let dir of directions) {
-        this.raycaster.set(this.playerPos, dir);
-        this.raycaster.far = this.data.radius;
+      if (dx < minDistX && dz < minDistZ) {
+        const overlapX = minDistX - dx;
+        const overlapZ = minDistZ - dz;
         
-        const intersects = this.raycaster.intersectObjects(this.wallMeshes, true);
+        const newPos = {x: position.x, y: position.y, z: position.z};
         
-        if (intersects.length > 0) {
-          canMove = false;
-          break;
+        if (overlapX < overlapZ) {
+          newPos.x += (position.x > wallPos.x ? overlapX : -overlapX);
+        } else {
+          newPos.z += (position.z > wallPos.z ? overlapZ : -overlapZ);
         }
-      }
-      
-      if (canMove) {
+        
         this.el.setAttribute('position', newPos);
       }
     }
