@@ -3,9 +3,9 @@
   <head>
     <meta charset="utf-8">
     <title>VR Museum</title>
-    <!-- Локальный файл A-Frame -->
+    <!-- Рекомендуется использовать актуальную версию A-Frame, если ваш локальный файл устарел -->
+    <!-- <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script> -->
     <script src="aframe.min.js"></script>
-    
   </head>
   <body>
     <a-scene background="color: #F0F0F0;">
@@ -43,7 +43,6 @@
       <a-light type="point" position="3.601 4.000 -76.191" intensity="1" distance="20" decay="1" color="#ffffff"></a-light>
       <a-light type="point" position="0.591 4.000 -67.081" intensity="1" distance="10" decay="1" color="#ffffff"></a-light>
 
-     
       <!-- Зал 2 -->
       <a-light type="point" position="32.509 4.000 -62.447" intensity="1" distance="7" decay="1" color="#ffffff"></a-light>
       <a-light type="point" position="30.390 4.000 -13.787" intensity="2" distance="7" decay="1" color="#ffffff"></a-light>
@@ -52,17 +51,15 @@
       <a-light type="point" position="16.207 4.000 -39.665" intensity="1" distance="20" decay="1" color="#ffffff"></a-light>
       <a-light type="point" position="17.679 4.000 -60.540" intensity="1" distance="20" decay="1" color="#ffffff"></a-light>
 
-
-      <!-- Игрок с физикой -->
-      <a-entity id="player" position="0 0 -5" player-movement="speed: 0.08; radius: 0.6">
-        <a-camera look-controls="pointerLockEnabled: false"></a-camera>
+      <!-- Игрок с физикой и управлением -->
+      <a-entity id="player" position="0 0 -5" player-movement="speed: 0.1; radius: 0.5">
+        <a-camera look-controls="pointerLockEnabled: true"></a-camera>
       </a-entity>
 
       <!-- Невидимый пол с физикой -->
       <a-plane position="0 0 0" rotation="-90 0 0" width="200" height="200" static-body visible="false"></a-plane>
 
-  
-      <!-- Стены с физикой -->
+      <!-- Стены с маркером wall-collider -->
       <a-box position="-19.018 2.672 -37.812" width="1" height="10" depth="55" wall-collider></a-box>
       <a-box position="33.877 2.672 -37.812" width="1" height="10" depth="55" wall-collider></a-box>
       <a-box position="7.857 2.672 -37.812" width="1" height="10" depth="55" wall-collider></a-box>
@@ -79,91 +76,139 @@
       <a-box position="26.872 2.672 -24.996" width="1" height="10" depth="15" rotation="0 90 0" wall-collider></a-box>
       <a-box position="26.984 2.672 -52.376" width="1" height="10" depth="15" rotation="0 90 0" wall-collider></a-box>
 
-            
       <!-- Модели -->
-      <!-- 
-      <a-entity gltf-model="url(1ploski.glb)" position="0 0 -5"></a-entity>
-      <a-entity gltf-model="url(1yadra.glb)" position="0 0 -5"></a-entity>
-      <a-entity gltf-model="url(2ploski.glb)" position="0 0 -5"></a-entity>
-      <a-entity gltf-model="url(2recep.glb)" position="0 0 -5"></a-entity>
-      <a-entity gltf-model="url(first.glb)" position="0 0 -5"></a-entity>
-      <a-entity gltf-model="url(lable.glb)" position="0 0 -5"></a-entity>
-      <a-entity gltf-model="url(rec.glb)" position="0 0 -5"></a-entity>
-      <a-entity gltf-model="url(slav.glb)" position="0 0 -5"></a-entity>
-         -->
       <a-entity gltf-model="url(enime.glb)" position="0 0 -5"></a-entity>
-   
-      <!-- 
-      <a-entity gltf-model="url(stena.glb)" position="0 0 -5"></a-entity>
-      <a-entity gltf-model="url(stolb.glb)" position="0 0 -5"></a-entity>
-      <a-entity gltf-model="url(tryu.glb)" position="0 0 -5"></a-entity>
-       -->
-      
       
     </a-scene>
-      <script>
-AFRAME.registerComponent('wall-collision', {
-  schema: {
-    radius: {type: 'number', default: 0.5}
-  },
-  
-  init: function() {
-    this.walls = [];
-    this.el.sceneEl.addEventListener('loaded', () => {
-      const wallElements = document.querySelectorAll('[wall-collider]');
-      this.walls = Array.from(wallElements).map(wall => {
-        const pos = wall.getAttribute('position');
-        const rot = wall.getAttribute('rotation') || {x: 0, y: 0, z: 0};
-        const width = wall.getAttribute('width') || 1;
-        const height = wall.getAttribute('height') || 1;
-        const depth = wall.getAttribute('depth') || 1;
-        
-        return {
-          element: wall,
-          position: pos,
-          rotation: rot,
-          width: width,
-          height: height,
-          depth: depth
-        };
-      });
-    });
-  },
-  
-  tick: function() {
-    if (this.walls.length === 0) return;
-    
-    const position = this.el.getAttribute('position');
-    const playerRadius = this.data.radius;
-    
-    for (let wall of this.walls) {
-      const wallPos = wall.position;
-      const wallWidth = wall.width / 2;
-      const wallDepth = wall.depth / 2;
-      
-      const dx = Math.abs(position.x - wallPos.x);
-      const dz = Math.abs(position.z - wallPos.z);
-      
-      const minDistX = wallWidth + playerRadius;
-      const minDistZ = wallDepth + playerRadius;
-      
-      if (dx < minDistX && dz < minDistZ) {
-        const overlapX = minDistX - dx;
-        const overlapZ = minDistZ - dz;
-        
-        const newPos = {x: position.x, y: position.y, z: position.z};
-        
-        if (overlapX < overlapZ) {
-          newPos.x += (position.x > wallPos.x ? overlapX : -overlapX);
-        } else {
-          newPos.z += (position.z > wallPos.z ? overlapZ : -overlapZ);
+
+    <script>
+      AFRAME.registerComponent('player-movement', {
+        schema: {
+          speed: { type: 'number', default: 0.1 },
+          radius: { type: 'number', default: 0.5 }
+        },
+
+        init: function () {
+          this.keys = { w: false, a: false, s: false, d: false, ArrowUp: false, ArrowLeft: false, ArrowDown: false, ArrowRight: false };
+          this.walls = [];
+          
+          // Обработка нажатий клавиш
+          this.keyDownHandler = this.keyDownHandler.bind(this);
+          this.keyUpHandler = this.keyUpHandler.bind(this);
+          document.addEventListener('keydown', this.keyDownHandler);
+          document.addEventListener('keyup', this.keyUpHandler);
+
+          // Сбор данных о стенах после загрузки сцены
+          this.el.sceneEl.addEventListener('loaded', () => {
+            const wallElements = document.querySelectorAll('[wall-collider]');
+            this.walls = Array.from(wallElements).map(wall => {
+              return {
+                position: wall.getAttribute('position'),
+                rotation: wall.getAttribute('rotation') || { x: 0, y: 0, z: 0 },
+                width: parseFloat(wall.getAttribute('width')) || 1,
+                depth: parseFloat(wall.getAttribute('depth')) || 1
+              };
+            });
+          });
+        },
+
+        keyDownHandler: function (evt) {
+          if (this.keys.hasOwnProperty(evt.key)) this.keys[evt.key] = true;
+        },
+
+        keyUpHandler: function (evt) {
+          if (this.keys.hasOwnProperty(evt.key)) this.keys[evt.key] = false;
+        },
+
+        tick: function () {
+          if (this.walls.length === 0) return;
+
+          const currentPos = this.el.getAttribute('position');
+          const camera = this.el.querySelector('a-camera');
+          const cameraRot = camera.getAttribute('rotation');
+          
+          // Вычисляем направление движения на основе поворота камеры (только по оси Y)
+          const yaw = cameraRot.y * (Math.PI / 180);
+          let moveX = 0;
+          let moveZ = 0;
+
+          if (this.keys.w || this.keys.ArrowUp) {
+            moveX -= Math.sin(yaw) * this.data.speed;
+            moveZ -= Math.cos(yaw) * this.data.speed;
+          }
+          if (this.keys.s || this.keys.ArrowDown) {
+            moveX += Math.sin(yaw) * this.data.speed;
+            moveZ += Math.cos(yaw) * this.data.speed;
+          }
+          if (this.keys.a || this.keys.ArrowLeft) {
+            moveX -= Math.cos(yaw) * this.data.speed;
+            moveZ += Math.sin(yaw) * this.data.speed;
+          }
+          if (this.keys.d || this.keys.ArrowRight) {
+            moveX += Math.cos(yaw) * this.data.speed;
+            moveZ -= Math.sin(yaw) * this.data.speed;
+          }
+
+          // Если движения нет, выходим
+          if (moveX === 0 && moveZ === 0) return;
+
+          // Предсказываем следующую позицию
+          let nextPos = { x: currentPos.x + moveX, y: currentPos.y, z: currentPos.z + moveZ };
+          let collisionOccurred = false;
+
+          // Проверка коллизий с каждой стеной
+          for (let wall of this.walls) {
+            // 1. Переводим координаты игрока в локальное пространство стены
+            let dx = nextPos.x - wall.position.x;
+            let dz = nextPos.z - wall.position.z;
+
+            // Поворачиваем точку на угол, обратный повороту стены
+            let rad = -wall.rotation.y * (Math.PI / 180);
+            let cos = Math.cos(rad);
+            let sin = Math.sin(rad);
+
+            let localX = dx * cos - dz * sin;
+            let localZ = dx * sin + dz * cos;
+
+            // 2. Проверяем пересечение с учетом радиуса игрока
+            let halfW = (wall.width / 2) + this.data.radius;
+            let halfD = (wall.depth / 2) + this.data.radius;
+
+            if (Math.abs(localX) < halfW && Math.abs(localZ) < halfD) {
+              collisionOccurred = true;
+
+              // 3. Разрешение коллизии: выталкиваем игрока по оси наименьшего пересечения
+              let overlapX = halfW - Math.abs(localX);
+              let overlapZ = halfD - Math.abs(localZ);
+
+              if (overlapX < overlapZ) {
+                localX += (localX > 0 ? overlapX : -overlapX);
+              } else {
+                localZ += (localZ > 0 ? overlapZ : -overlapZ);
+              }
+
+              // 4. Переводим координаты обратно в мировое пространство
+              let invRad = -rad;
+              let invCos = Math.cos(invRad);
+              let invSin = Math.sin(invRad);
+
+              let worldX = localX * invCos - localZ * invSin;
+              let worldZ = localX * invSin + localZ * invCos;
+
+              nextPos.x = wall.position.x + worldX;
+              nextPos.z = wall.position.z + worldZ;
+            }
+          }
+
+          // Применяем новую позицию (с коллизией или без нее)
+          this.el.setAttribute('position', nextPos);
+        },
+
+        remove: function () {
+          document.removeEventListener('keydown', this.keyDownHandler);
+          document.removeEventListener('keyup', this.keyUpHandler);
         }
-        
-        this.el.setAttribute('position', newPos);
-      }
-    }
-  }
-});
-</script>
+      });
+    </script>
   </body>
 </html>
