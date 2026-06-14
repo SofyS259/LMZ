@@ -92,14 +92,14 @@
 
       AFRAME.registerComponent('player-movement', {
         schema: {
-          speed: { type: 'number', default: 0.03 },
-          radius: { type: 'number', default: 0.5 }
+          speed: { type: 'number', default: 0.3 },
+          radius: { type: 'number', default: 0.5 },
+          subSteps: { type: 'number', default: 4 } // Разбиваем движение на подшаги для защиты от туннелирования
         },
 
         init: function() {
           this.walls = [];
           this.keys = {};
-          this.collisionCount = 0;
 
           this.onKeyDown = this.onKeyDown.bind(this);
           this.onKeyUp = this.onKeyUp.bind(this);
@@ -108,7 +108,7 @@
 
           const initWalls = () => {
             const wallEls = document.querySelectorAll('[wall-collider]');
-            this.walls = Array.from(wallEls).map((wall, index) => {
+            this.walls = Array.from(wallEls).map(wall => {
               const pos = parseVector(wall, 'position');
               const rot = parseVector(wall, 'rotation');
               const width = parseFloat(wall.getAttribute('width')) || 1;
@@ -119,8 +119,7 @@
                 z: pos.z,
                 rotY: (rot.y || 0) * Math.PI / 180,
                 halfWidth: width / 2,
-                halfDepth: depth / 2,
-                index: index
+                halfDepth: depth / 2
               };
             });
             console.log('Walls initialized:', this.walls.length);
@@ -151,6 +150,7 @@
           const yaw = cameraRot.y * Math.PI / 180;
           const speed = this.data.speed;
           const radius = this.data.radius;
+          const subSteps = this.data.subSteps;
           
           let moveX = 0;
           let moveZ = 0;
@@ -174,58 +174,50 @@
 
           if (moveX === 0 && moveZ === 0) return;
 
-          // Пробуем двигаться по X
-          let newX = pos.x + moveX;
-          let collidedX = false;
-          
-          for (const wall of this.walls) {
-            if (this.checkCollision(newX, pos.z, wall, radius)) {
-              collidedX = true;
-              break;
-            }
-          }
-          
-          if (!collidedX) {
-            // Пробуем двигаться по Z
-            let newZ = pos.z + moveZ;
+          // Разбиваем движение на подшаги для предотвращения туннелирования
+          let currentX = pos.x;
+          let currentZ = pos.z;
+
+          for (let step = 0; step < subSteps; step++) {
+            const stepX = moveX / subSteps;
+            const stepZ = moveZ / subSteps;
+            
+            let newX = currentX + stepX;
+            let newZ = currentZ + stepZ;
+            
+            let collidedX = false;
             let collidedZ = false;
             
+            // Проверяем X
             for (const wall of this.walls) {
-              if (this.checkCollision(newX, newZ, wall, radius)) {
+              if (this.checkCollision(newX, currentZ, wall, radius)) {
+                collidedX = true;
+                break;
+              }
+            }
+            
+            if (!collidedX) {
+              currentX = newX;
+            }
+            
+            // Проверяем Z
+            for (const wall of this.walls) {
+              if (this.checkCollision(currentX, newZ, wall, radius)) {
                 collidedZ = true;
                 break;
               }
             }
             
             if (!collidedZ) {
-              // Нет коллизий, применяем обе координаты
-              this.el.setAttribute('position', { x: newX, y: pos.y, z: newZ });
-            } else {
-              // Коллизия по Z, применяем только X
-              this.el.setAttribute('position', { x: newX, y: pos.y, z: pos.z });
+              currentZ = newZ;
             }
-          } else {
-            // Коллизия по X, пробуем только Z
-            let newZ = pos.z + moveZ;
-            let collidedZ = false;
-            
-            for (const wall of this.walls) {
-              if (this.checkCollision(pos.x, newZ, wall, radius)) {
-                collidedZ = true;
-                break;
-              }
-            }
-            
-            if (!collidedZ) {
-              // Применяем только Z
-              this.el.setAttribute('position', { x: pos.x, y: pos.y, z: newZ });
-            }
-            // Иначе остаемся на месте
           }
+
+          // Применяем финальную позицию
+          this.el.setAttribute('position', { x: currentX, y: pos.y, z: currentZ });
         },
         
         checkCollision: function(playerX, playerZ, wall, radius) {
-          // Переводим в локальные координаты стены
           const dx = playerX - wall.x;
           const dz = playerZ - wall.z;
           
@@ -235,25 +227,10 @@
           const localX = dx * cos - dz * sin;
           const localZ = dx * sin + dz * cos;
 
-          // Проверяем пересечение с учетом радиуса
           const minX = wall.halfWidth + radius;
           const minZ = wall.halfDepth + radius;
 
-          const collided = Math.abs(localX) < minX && Math.abs(localZ) < minZ;
-          
-          if (collided) {
-            this.collisionCount++;
-            if (this.collisionCount % 10 === 0) {
-              console.log('Collision detected!', {
-                player: { x: playerX, z: playerZ },
-                wall: { x: wall.x, z: wall.z, rotY: wall.rotY },
-                local: { x: localX, z: localZ },
-                bounds: { x: minX, z: minZ }
-              });
-            }
-          }
-          
-          return collided;
+          return Math.abs(localX) < minX && Math.abs(localZ) < minZ;
         },
 
         remove: function() {
