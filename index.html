@@ -54,7 +54,7 @@
 
 
       <!-- Игрок с физикой -->
-      <a-entity id="player" position="0 0 -5" wall-collision="radius: 0.5" wasd-controls="acceleration: 50">
+      <a-entity id="player" position="0 0 -5" player-movement="speed: 0.08; radius: 0.6">
         <a-camera look-controls="pointerLockEnabled: false"></a-camera>
       </a-entity>
 
@@ -102,44 +102,76 @@
       
     </a-scene>
       <script>
-AFRAME.registerComponent('wall-collision', {
+AFRAME.registerComponent('player-movement', {
   schema: {
-    radius: {type: 'number', default: 0.5}
+    speed: {type: 'number', default: 0.08},
+    radius: {type: 'number', default: 0.6}
   },
   
   init: function() {
-    this.directions = [
-      new THREE.Vector3(1, 0, 0),
-      new THREE.Vector3(-1, 0, 0),
-      new THREE.Vector3(0, 0, 1),
-      new THREE.Vector3(0, 0, -1)
-    ];
+    this.keys = {};
     this.raycaster = new THREE.Raycaster();
     this.playerPos = new THREE.Vector3();
+    this.wallMeshes = [];
+    this.camera = this.el.querySelector('a-camera');
+    
+    window.addEventListener('keydown', (e) => this.keys[e.code] = true);
+    window.addEventListener('keyup', (e) => this.keys[e.code] = false);
+    
+    this.el.sceneEl.addEventListener('loaded', () => {
+      const walls = document.querySelectorAll('[wall-collider]');
+      this.wallMeshes = Array.from(walls).map(w => w.object3D).filter(o => o);
+    });
   },
   
   tick: function() {
-    const el = this.el;
-    const camera = el.querySelector('a-camera');
-    if (!camera) return;
+    const position = this.el.getAttribute('position');
+    const cameraRotation = this.camera.getAttribute('rotation');
     
-    const position = el.getAttribute('position');
-    this.playerPos.set(position.x, position.y + 1, position.z);
+    const yaw = cameraRotation.y * Math.PI / 180;
+    const forward = new THREE.Vector3(-Math.sin(yaw), 0, -Math.cos(yaw));
+    const right = new THREE.Vector3(Math.cos(yaw), 0, -Math.sin(yaw));
     
-    for (let dir of this.directions) {
-      this.raycaster.set(this.playerPos, dir);
-      this.raycaster.far = this.data.radius;
+    const moveDir = new THREE.Vector3(0, 0, 0);
+    
+    if (this.keys['KeyW']) moveDir.add(forward);
+    if (this.keys['KeyS']) moveDir.sub(forward);
+    if (this.keys['KeyD']) moveDir.add(right);
+    if (this.keys['KeyA']) moveDir.sub(right);
+    
+    if (moveDir.length() > 0) {
+      moveDir.normalize().multiplyScalar(this.data.speed);
       
-      const walls = document.querySelectorAll('[wall-collider]');
-      const wallMeshes = Array.from(walls).map(w => w.object3D).filter(o => o);
+      const newPos = {
+        x: position.x + moveDir.x,
+        y: position.y,
+        z: position.z + moveDir.z
+      };
       
-      const intersects = this.raycaster.intersectObjects(wallMeshes, true);
+      this.playerPos.set(newPos.x, newPos.y + 1, newPos.z);
       
-      if (intersects.length > 0) {
-        const newPos = position.clone();
-        newPos.x -= dir.x * this.data.radius * 0.1;
-        newPos.z -= dir.z * this.data.radius * 0.1;
-        el.setAttribute('position', newPos);
+      const directions = [
+        new THREE.Vector3(1, 0, 0),
+        new THREE.Vector3(-1, 0, 0),
+        new THREE.Vector3(0, 0, 1),
+        new THREE.Vector3(0, 0, -1)
+      ];
+      
+      let canMove = true;
+      for (let dir of directions) {
+        this.raycaster.set(this.playerPos, dir);
+        this.raycaster.far = this.data.radius;
+        
+        const intersects = this.raycaster.intersectObjects(this.wallMeshes, true);
+        
+        if (intersects.length > 0) {
+          canMove = false;
+          break;
+        }
+      }
+      
+      if (canMove) {
+        this.el.setAttribute('position', newPos);
       }
     }
   }
