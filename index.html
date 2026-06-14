@@ -6,12 +6,11 @@
     <!-- Локальный файл A-Frame -->
     <script src="aframe.min.js"></script>
     <!-- Физика -->
-    <script src="https://cdn.jsdelivr.net/gh/kripken/ammo.js@HEAD/builds/ammo.wasm.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-physics-system@v4.2.2/dist/aframe-physics-system.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@v7.5.1/dist/aframe-extras.min.js"></script>
   </head>
   <body>
-    <a-scene background="color: #F0F0F0;" physics="debug: false; physics: ammo">
+    <a-scene background="color: #F0F0F0;" physics="driver: cannon; debug: false">
       
       <!-- Базовый свет -->
       <a-light type="ambient" color="#ffffff" intensity="0.8"></a-light>
@@ -58,10 +57,9 @@
 
       <!-- Игрок с физикой -->
       <a-entity id="player" position="0 0 -5" 
-          movement-controls="speed: 0.15" 
-          ammo-body="type: kinematic; mass: 60; linearSleepingThreshold: 0; angularSleepingThreshold: 0" 
-          ammo-shape="type: capsule; fit: manual; radius: 0.4; height: 1.6; offset: 0 0.8 0">
-      <a-camera position="0 1.6 0" look-controls="pointerLockEnabled: false"></a-camera>
+          dynamic-body="mass: 60; shape: sphere; sphereRadius: 0.5; linearDamping: 0.9; angularDamping: 0.9"
+          wasd-controls="speed: 0.15">
+      <a-camera look-controls="pointerLockEnabled: false"></a-camera>
       </a-entity>
 
       <!-- Невидимый пол с физикой -->
@@ -69,21 +67,21 @@
 
   
       <!-- Стены с физикой -->
-      <a-box position="-19.018 2.672 -37.812" width="1" height="10" depth="55" static-body visible="false"></a-box>
-      <a-box position="33.877 2.672 -37.812" width="1" height="10" depth="55" static-body visible="false"></a-box>
-      <a-box position="7.857 2.672 -37.812" width="1" height="10" depth="55" static-body visible="false"></a-box>
-      <a-box position="7.370 2.672 -71.396" width="1" height="10" depth="12" static-body visible="false"></a-box>
-      <a-box position="-4.035 2.672 -72.900" width="1" height="10" depth="15" static-body visible="false"></a-box>
-      <a-box position="25.013 2.672 -72.803" width="1" height="10" depth="15" static-body visible="false"></a-box>
-      <a-box position="18.641 2.672 -2.104" width="1" height="10" depth="15" static-body visible="false"></a-box>
-      <a-box position="-10.235 2.672 -2.104" width="1" height="10" depth="15" static-body visible="false"></a-box>
-      <a-box position="4.061 2.672 4.993" width="1" height="10" depth="30" rotation="0 90 0" static-body visible="false"></a-box>
-      <a-box position="10.713 2.672 -80.527" width="1" height="10" depth="30" rotation="0 90 0" static-body visible="false"></a-box>
-      <a-box position="-11.954 2.672 -47.199" width="1" height="10" depth="15" rotation="0 90 0" static-body visible="false"></a-box>
-      <a-box position="-12.066 2.672 -34.922" width="1" height="10" depth="15" rotation="0 90 0" static-body visible="false"></a-box>
-      <a-box position="-12.066 2.672 -23.201" width="1" height="10" depth="15" rotation="0 90 0" static-body visible="false"></a-box>
-      <a-box position="26.872 2.672 -24.996" width="1" height="10" depth="15" rotation="0 90 0" static-body visible="false"></a-box>
-      <a-box position="26.984 2.672 -52.376" width="1" height="10" depth="15" rotation="0 90 0" static-body visible="false"></a-box>
+      <a-box position="-19.018 2.672 -37.812" width="1" height="10" depth="55" static-body material="opacity: 0; transparent: true"></a-box>
+      <a-box position="33.877 2.672 -37.812" width="1" height="10" depth="55" static-body material="opacity: 0; transparent: true"></a-box>
+      <a-box position="7.857 2.672 -37.812" width="1" height="10" depth="55" static-body material="opacity: 0; transparent: true"></a-box>
+      <a-box position="7.370 2.672 -71.396" width="1" height="10" depth="12" static-body material="opacity: 0; transparent: true"></a-box>
+      <a-box position="-4.035 2.672 -72.900" width="1" height="10" depth="15" static-body material="opacity: 0; transparent: true"></a-box>
+      <a-box position="25.013 2.672 -72.803" width="1" height="10" depth="15" static-body material="opacity: 0; transparent: true"></a-box>
+      <a-box position="18.641 2.672 -2.104" width="1" height="10" depth="15" static-body material="opacity: 0; transparent: true"></a-box>
+      <a-box position="-10.235 2.672 -2.104" width="1" height="10" depth="15" static-body material="opacity: 0; transparent: true"></a-box>
+      <a-box position="4.061 2.672 4.993" width="1" height="10" depth="30" rotation="0 90 0" static-body material="opacity: 0; transparent: true"></a-box>
+      <a-box position="10.713 2.672 -80.527" width="1" height="10" depth="30" rotation="0 90 0" static-body material="opacity: 0; transparent: true"></a-box>
+      <a-box position="-11.954 2.672 -47.199" width="1" height="10" depth="15" rotation="0 90 0" static-body material="opacity: 0; transparent: true"></a-box>
+      <a-box position="-12.066 2.672 -34.922" width="1" height="10" depth="15" rotation="0 90 0" static-body material="opacity: 0; transparent: true"></a-box>
+      <a-box position="-12.066 2.672 -23.201" width="1" height="10" depth="15" rotation="0 90 0" static-body material="opacity: 0; transparent: true"></a-box>
+      <a-box position="26.872 2.672 -24.996" width="1" height="10" depth="15" rotation="0 90 0" static-body material="opacity: 0; transparent: true"></a-box>
+      <a-box position="26.984 2.672 -52.376" width="1" height="10" depth="15" rotation="0 90 0" static-body material="opacity: 0; transparent: true"></a-box>
 
             
       <!-- Модели -->
