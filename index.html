@@ -5,45 +5,45 @@
     <title>VR Museum</title>
     <script src="aframe.min.js"></script>
     <style>
-      #info-modal {
-        display: none;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 600px;
-        max-width: 90%;
-        max-height: 80vh;
-        background: rgba(0, 0, 0, 0.8);
-        color: #ffffff;
-        font-family: 'Roboto', Arial, sans-serif;
-        padding: 30px;
-        border-radius: 8px;
-        overflow-y: auto;
-        z-index: 9999;
-      }
-      #modal-text {
-        white-space: pre-wrap;
-        line-height: 1.6;
-        font-size: 16px;
-      }
-      #modal-title {
-        font-size: 22px;
-        font-weight: bold;
-        margin-bottom: 15px;
-        border-bottom: 1px solid rgba(255,255,255,0.3);
-        padding-bottom: 10px;
-      }
-      #close-btn {
-        position: absolute;
-        top: 15px;
-        right: 20px;
-        font-size: 28px;
-        cursor: pointer;
-        color: #ffffff;
-      }
-      #close-btn:hover { color: #cccccc; }
-    </style>
+  #info-modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    max-width: 90%;
+    max-height: 80vh;
+    background: rgba(128, 0, 0, 0.8); /* <-- (Maroon с прозрачностью) */
+    color: #ffffff;
+    font-family: 'Roboto', Arial, sans-serif;
+    padding: 30px;
+    border-radius: 8px;
+    overflow-y: auto;
+    z-index: 9999;
+  }
+  #modal-text {
+    white-space: pre-wrap;
+    line-height: 1.6;
+    font-size: 16px;
+  }
+  #modal-title {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    border-bottom: 1px solid rgba(255,255,255,0.3);
+    padding-bottom: 10px;
+  }
+  #close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    cursor: pointer;
+    color: #ffffff;
+  }
+  #close-btn:hover { color: #cccccc; }
+</style>
   </head>
   <body>
     <a-scene background="color: #F0F0F0;">
@@ -142,77 +142,66 @@
       
 
       <!-- Текст для экспонатов на табличках -->
-            <!-- Колонна 1 (Экспонаты 1-10), X = 0 -->
-      <a-entity exhibit-point="pos: 0 1.2 0; id: one"></a-entity>
-      <a-entity exhibit-point="pos: 0 1.2 1; id: two"></a-entity>
-      <a-entity exhibit-point="pos: 0 1.2 2; id: three"></a-entity>
-      <a-entity exhibit-point="pos: 0 1.2 3; id: four"></a-entity>
-      <a-entity exhibit-point="pos: 0 1.2 4; id: five"></a-entity>
-      <a-entity exhibit-point="pos: 0 1.2 5; id: six"></a-entity>
-      <a-entity exhibit-point="pos: 0 1.2 6; id: seven"></a-entity>
-      <a-entity exhibit-point="pos: 0 1.2 7; id: eight"></a-entity>
-      <a-entity exhibit-point="pos: 0 1.2 8; id: nine"></a-entity>
-      <a-entity exhibit-point="pos: 0 1.2 9; id: ten"></a-entity>
-
-      <!-- Колонна 2 (Экспонаты 11-20), X = 10 -->
-      <a-entity exhibit-point="pos: 10 1.2 0; id: eleven"></a-entity>
-      <a-entity exhibit-point="pos: 10 1.2 1; id: twelve"></a-entity>
-      <a-entity exhibit-point="pos: 10 1.2 2; id: thirteen"></a-entity>
-      <a-entity exhibit-point="pos: 10 1.2 3; id: fourteen"></a-entity>
-      <a-entity exhibit-point="pos: 10 1.2 4; id: fifteen"></a-entity>
-      <a-entity exhibit-point="pos: 10 1.2 5; id: sixteen"></a-entity>
-      <a-entity exhibit-point="pos: 10 1.2 6; id: seventeen"></a-entity>
-      <a-entity exhibit-point="pos: 10 1.2 7; id: eighteen"></a-entity>
-      <a-entity exhibit-point="pos: 10 1.2 8; id: nineteen"></a-entity>
-      <a-entity exhibit-point="pos: 10 1.2 9; id: twenty"></a-entity>
-
-      <!-- Колонна 3 (Экспонаты 21-30), X = 20 -->
-      <a-entity exhibit-point="pos: 20 1.2 0; id: twenty_one"></a-entity>
-      <a-entity exhibit-point="pos: 20 1.2 1; id: twenty_two"></a-entity>
-      <a-entity exhibit-point="pos: 20 1.2 2; id: twenty_three"></a-entity>
-      <a-entity exhibit-point="pos: 20 1.2 3; id: twenty_four"></a-entity>
-      <a-entity exhibit-point="pos: 20 1.2 4; id: twenty_five"></a-entity>
-      <a-entity exhibit-point="pos: 20 1.2 5; id: twenty_six"></a-entity>
-      <a-entity exhibit-point="pos: 20 1.2 6; id: twenty_seven"></a-entity>
-      <a-entity exhibit-point="pos: 20 1.2 7; id: twenty_eight"></a-entity>
-      <a-entity exhibit-point="pos: 20 1.2 8; id: twenty_nine"></a-entity>
-      <a-entity exhibit-point="pos: 20 1.2 9; id: thirty"></a-entity>
-
-      <!-- Колонна 4 (Экспонаты 31-40), X = 30 -->
-      <a-entity exhibit-point="pos: 30 1.2 0; id: thirty_one"></a-entity>
-      <a-entity exhibit-point="pos: 30 1.2 1; id: thirty_two"></a-entity>
-      <a-entity exhibit-point="pos: 30 1.2 2; id: thirty_three"></a-entity>
-      <a-entity exhibit-point="pos: 30 1.2 3; id: thirty_four"></a-entity>
-      <a-entity exhibit-point="pos: 30 1.2 4; id: thirty_five"></a-entity>
-      <a-entity exhibit-point="pos: 30 1.2 5; id: thirty_six"></a-entity>
-      <a-entity exhibit-point="pos: 30 1.2 6; id: thirty_seven"></a-entity>
-      <a-entity exhibit-point="pos: 30 1.2 7; id: thirty_eight"></a-entity>
-      <a-entity exhibit-point="pos: 30 1.2 8; id: thirty_nine"></a-entity>
-      <a-entity exhibit-point="pos: 30 1.2 9; id: forty"></a-entity>
-
-      <!-- Колонна 5 (Экспонаты 41-50), X = 40 -->
-      <a-entity exhibit-point="pos: 40 1.2 0; id: forty_one"></a-entity>
-      <a-entity exhibit-point="pos: 40 1.2 1; id: forty_two"></a-entity>
-      <a-entity exhibit-point="pos: 40 1.2 2; id: forty_three"></a-entity>
-      <a-entity exhibit-point="pos: 40 1.2 3; id: forty_four"></a-entity>
-      <a-entity exhibit-point="pos: 40 1.2 4; id: forty_five"></a-entity>
-      <a-entity exhibit-point="pos: 40 1.2 5; id: forty_six"></a-entity>
-      <a-entity exhibit-point="pos: 40 1.2 6; id: forty_seven"></a-entity>
-      <a-entity exhibit-point="pos: 40 1.2 7; id: forty_eight"></a-entity>
-      <a-entity exhibit-point="pos: 40 1.2 8; id: forty_nine"></a-entity>
-      <a-entity exhibit-point="pos: 40 1.2 9; id: fifty"></a-entity>
-
-      <!-- Колонна 6 (Экспонаты 51-60), X = 50 -->
-      <a-entity exhibit-point="pos: 50 1.2 0; id: fifty_one"></a-entity>
-      <a-entity exhibit-point="pos: 50 1.2 1; id: fifty_two"></a-entity>
-      <a-entity exhibit-point="pos: 50 1.2 2; id: fifty_three"></a-entity>
-      <a-entity exhibit-point="pos: 50 1.2 3; id: fifty_four"></a-entity>
-      <a-entity exhibit-point="pos: 50 1.2 4; id: fifty_five"></a-entity>
-      <a-entity exhibit-point="pos: 50 1.2 5; id: fifty_six"></a-entity>
-      <a-entity exhibit-point="pos: 50 1.2 6; id: fifty_seven"></a-entity>
-      <a-entity exhibit-point="pos: 50 1.2 7; id: fifty_eight"></a-entity>
-      <a-entity exhibit-point="pos: 50 1.2 8; id: fifty_nine"></a-entity>
-      <a-entity exhibit-point="pos: 50 1.2 9; id: sixty"></a-entity>
+      <a-entity exhibit-point="pos: -8.439 1.200 -12.706; id: one"></a-entity>
+      <a-entity exhibit-point="pos: -3.638 1.200 -10.815; id: two"></a-entity>
+      <a-entity exhibit-point="pos: -15.241 1.200 -10.815; id: three"></a-entity>
+      <a-entity exhibit-point="pos: -12.360 1.200 -21.070; id: five"></a-entity>
+      <a-entity exhibit-point="pos: -5.769 1.200 -21.072; id: six"></a-entity>
+      <a-entity exhibit-point="pos: 7.245 1.200 -32.498; id: seven"></a-entity>
+      <a-entity exhibit-point="pos: 7.245 1.200 -18.022; id: eight"></a-entity>
+      <a-entity exhibit-point="pos: 7.245 1.200 -57.279; id: eight"></a-entity>
+      <a-entity exhibit-point="pos: -18.571 1.200 -18.820; id: nine"></a-entity>
+      <a-entity exhibit-point="pos: -18.571 1.200 -31.495; id: ten"></a-entity>
+      <a-entity exhibit-point="pos: -5.057 1.200 -22.452; id: eleven"></a-entity>
+      <a-entity exhibit-point="pos: -13.929 1.200 -22.452; id: twelve"></a-entity>
+      <a-entity exhibit-point="pos: -9.512 1.200 -22.452; id: thirteen"></a-entity>
+      <a-entity exhibit-point="pos: -4.626 1.200 -34.297; id: fourteen"></a-entity>
+      <a-entity exhibit-point="pos: -13.917 1.200 -35.684; id: fifteen"></a-entity>
+      <a-entity exhibit-point="pos: -18.537 1.200 -43.389; id: sixteen"></a-entity>
+      <a-entity exhibit-point="pos: -5.081 1.200 -35.687; id: seventeen"></a-entity>
+      <a-entity exhibit-point="pos: -9.499 1.200 -35.687; id: eighteen"></a-entity>
+      <a-entity exhibit-point="pos: -13.980 1.200 -46.489; id: nineteen"></a-entity>
+      <a-entity exhibit-point="pos: -5.107 1.200 -46.489; id: twenty"></a-entity>
+      <a-entity exhibit-point="pos: -9.548 1.200 -46.489; id: twenty_one"></a-entity>
+      <a-entity exhibit-point="pos: -5.053 1.200 -47.844; id: twenty_two"></a-entity>
+      <a-entity exhibit-point="pos: -13.888 1.200 -47.844; id: twenty_three"></a-entity>
+      <a-entity exhibit-point="pos: -9.465 1.200 -47.844; id: twenty_four"></a-entity>
+      <a-entity exhibit-point="pos: -18.545 1.200 -54.190; id: twenty_five"></a-entity>
+      <a-entity exhibit-point="pos: -6.076 1.200 -64.704; id: twenty_six"></a-entity>
+      <a-entity exhibit-point="pos: 33.336 1.200 -27.779; id: twenty_seven"></a-entity>
+      <a-entity exhibit-point="pos: 33.336 1.200 -49.414; id: twenty_eight"></a-entity>
+      <a-entity exhibit-point="pos: 6.938 1.200 -69.238; id: twenty_nine"></a-entity>
+      <a-entity exhibit-point="pos: 8.023 1.200 -76.438; id: thirty"></a-entity>
+      <a-entity exhibit-point="pos: 8.023 1.200 -69.137; id: thirty_one"></a-entity>
+      <a-entity exhibit-point="pos: 14.453 1.200 -79.771; id: thirty_two"></a-entity>
+      <a-entity exhibit-point="pos: 10.199 1.200 -79.771; id: thirty_three"></a-entity>
+      <a-entity exhibit-point="pos: 1.235 1.200 -79.742; id: thirty_four"></a-entity>
+      <a-entity exhibit-point="pos: 18.746 1.200 -79.253; id: thirty_five"></a-entity>
+      <a-entity exhibit-point="pos: 24.781 0.692 -73.934; id: thirty_six"></a-entity>
+      <a-entity exhibit-point="pos: 24.781 0.692 -70.942; id: thirty_seven"></a-entity>
+      <a-entity exhibit-point="pos: 24.781 4.761 -70.942; id: thirty_eight"></a-entity>
+      <a-entity exhibit-point="pos: 26.352 2.867 -70.129; id: thirty_nine"></a-entity>
+      <a-entity exhibit-point="pos: 22.656 2.867 -71.744; id: forty"></a-entity>
+      <a-entity exhibit-point="pos: 33.299 2.867 -62.357; id: forty_one"></a-entity>
+      <a-entity exhibit-point="pos: 18.460 2.867 -64.719; id: forty_two"></a-entity>
+      <a-entity exhibit-point="pos: 28.776 2.867 -53.234; id: forty_three"></a-entity>
+      <a-entity exhibit-point="pos: 19.905 2.867 -53.234; id: forty_four"></a-entity>
+      <a-entity exhibit-point="pos: 25.765 2.867 -64.729; id: forty_five"></a-entity>
+      <a-entity exhibit-point="pos: 24.313 2.867 -53.239; id: forty_six"></a-entity>
+      <a-entity exhibit-point="pos: 24.786 2.867 -51.883; id: forty_seven"></a-entity>
+      <a-entity exhibit-point="pos: 20.083 2.867 -51.883; id: forty_eight"></a-entity>
+      <a-entity exhibit-point="pos: 28.604 2.867 -51.883; id: forty_nine"></a-entity>
+      <a-entity exhibit-point="pos: 24.769 2.867 -44.729; id: fifty"></a-entity>
+      <a-entity exhibit-point="pos: 24.787 2.867 -25.654; id: fifty_one"></a-entity>
+      <a-entity exhibit-point="pos: 28.664 2.867 -25.654; id: fifty_two"></a-entity>
+      <a-entity exhibit-point="pos: 19.947 2.867 -25.654; id: fifty_three"></a-entity>
+      <a-entity exhibit-point="pos: 20.036 2.867 -24.299; id: fifty_four"></a-entity>
+      <a-entity exhibit-point="pos: 24.339 2.867 -24.299; id: fifty_five"></a-entity>
+      <a-entity exhibit-point="pos: 28.568 2.867 -24.299; id: fifty_six"></a-entity>
+      <a-entity exhibit-point="pos: 33.358 2.867 -17.369; id: fifty_seven"></a-entity>
+      <a-entity exhibit-point="pos: 21.497 2.867 -11.890; id: fifty_eight"></a-entity>
+      <a-entity exhibit-point="pos: 8.386 2.867 -57.576; id: fifty_nine"></a-entity>
+      <a-entity exhibit-point="pos: 8.386 2.867 -17.764; id: sixty"></a-entity>
       
       
     </a-scene>
