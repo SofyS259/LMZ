@@ -4,6 +4,46 @@
     <meta charset="utf-8">
     <title>VR Museum</title>
     <script src="aframe.min.js"></script>
+    <style>
+      #info-modal {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 600px;
+        max-width: 90%;
+        max-height: 80vh;
+        background: rgba(0, 0, 0, 0.8);
+        color: #ffffff;
+        font-family: 'Roboto', Arial, sans-serif;
+        padding: 30px;
+        border-radius: 8px;
+        overflow-y: auto;
+        z-index: 9999;
+      }
+      #modal-text {
+        white-space: pre-wrap;
+        line-height: 1.6;
+        font-size: 16px;
+      }
+      #modal-title {
+        font-size: 22px;
+        font-weight: bold;
+        margin-bottom: 15px;
+        border-bottom: 1px solid rgba(255,255,255,0.3);
+        padding-bottom: 10px;
+      }
+      #close-btn {
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        font-size: 28px;
+        cursor: pointer;
+        color: #ffffff;
+      }
+      #close-btn:hover { color: #cccccc; }
+    </style>
   </head>
   <body>
     <a-scene background="color: #F0F0F0;">
@@ -49,9 +89,10 @@
       <a-light type="point" position="16.207 4.000 -39.665" intensity="1" distance="20" decay="1" color="#ffffff"></a-light>
       <a-light type="point" position="17.679 4.000 -60.540" intensity="1" distance="20" decay="1" color="#ffffff"></a-light>
 
+      
       <!-- Игрок -->
       <a-entity id="player" position="0 0 -5" player-movement>
-        <a-camera look-controls="pointerLockEnabled: true" wasd-controls="enabled: false"></a-camera>
+        <a-camera look-controls="pointerLockEnabled: true" wasd-controls="enabled: false" cursor="rayOrigin: mouse"></a-camera>
       </a-entity>
 
       <!-- Невидимый пол -->
@@ -99,10 +140,133 @@
       <a-entity gltf-model="url(stolb.glb)" position="0 0 -5"></a-entity>
       <a-entity gltf-model="url(tryu.glb)" position="0 0 -5"></a-entity>
        -->
+
+      <!-- Текст для экспонатов на табличках -->
+      <!-- Экспонаты 1-10 (первый ряд) -->
+      <a-entity exhibit-point="pos: 0 1.5 -5; id: one"></a-entity>
+      <a-entity exhibit-point="pos: 3 1.5 -5; id: two"></a-entity>
+      <a-entity exhibit-point="pos: 6 1.5 -5; id: three"></a-entity>
+      <a-entity exhibit-point="pos: 9 1.5 -5; id: four"></a-entity>
+      <a-entity exhibit-point="pos: 12 1.5 -5; id: five"></a-entity>
+      <a-entity exhibit-point="pos: 15 1.5 -5; id: six"></a-entity>
+      <a-entity exhibit-point="pos: 18 1.5 -5; id: seven"></a-entity>
+      <a-entity exhibit-point="pos: 21 1.5 -5; id: eight"></a-entity>
+      <a-entity exhibit-point="pos: 24 1.5 -5; id: nine"></a-entity>
+      <a-entity exhibit-point="pos: 27 1.5 -5; id: ten"></a-entity>
+
+      <!-- Экспонаты 11-20 (второй ряд) -->
+      <a-entity exhibit-point="pos: 0 1.5 -8; id: eleven"></a-entity>
+      <a-entity exhibit-point="pos: 3 1.5 -8; id: twelve"></a-entity>
+      <a-entity exhibit-point="pos: 6 1.5 -8; id: thirteen"></a-entity>
+      <a-entity exhibit-point="pos: 9 1.5 -8; id: fourteen"></a-entity>
+      <a-entity exhibit-point="pos: 12 1.5 -8; id: fifteen"></a-entity>
+      <a-entity exhibit-point="pos: 15 1.5 -8; id: sixteen"></a-entity>
+      <a-entity exhibit-point="pos: 18 1.5 -8; id: seventeen"></a-entity>
+      <a-entity exhibit-point="pos: 21 1.5 -8; id: eighteen"></a-entity>
+      <a-entity exhibit-point="pos: 24 1.5 -8; id: nineteen"></a-entity>
+      <a-entity exhibit-point="pos: 27 1.5 -8; id: twenty"></a-entity>
+
+      <!-- Экспонаты 21-30 (третий ряд) -->
+      <a-entity exhibit-point="pos: 0 1.5 -11; id: twenty_one"></a-entity>
+      <a-entity exhibit-point="pos: 3 1.5 -11; id: twenty_two"></a-entity>
+      <a-entity exhibit-point="pos: 6 1.5 -11; id: twenty_three"></a-entity>
+      <a-entity exhibit-point="pos: 9 1.5 -11; id: twenty_four"></a-entity>
+      <a-entity exhibit-point="pos: 12 1.5 -11; id: twenty_five"></a-entity>
+      <a-entity exhibit-point="pos: 15 1.5 -11; id: twenty_six"></a-entity>
+      <a-entity exhibit-point="pos: 18 1.5 -11; id: twenty_seven"></a-entity>
+      <a-entity exhibit-point="pos: 21 1.5 -11; id: twenty_eight"></a-entity>
+      <a-entity exhibit-point="pos: 24 1.5 -11; id: twenty_nine"></a-entity>
+      <a-entity exhibit-point="pos: 27 1.5 -11; id: thirty"></a-entity>
+
+      <!-- Экспонаты 31-40 (четвертый ряд) -->
+      <a-entity exhibit-point="pos: 0 1.5 -14; id: thirty_one"></a-entity>
+      <a-entity exhibit-point="pos: 3 1.5 -14; id: thirty_two"></a-entity>
+      <a-entity exhibit-point="pos: 6 1.5 -14; id: thirty_three"></a-entity>
+      <a-entity exhibit-point="pos: 9 1.5 -14; id: thirty_four"></a-entity>
+      <a-entity exhibit-point="pos: 12 1.5 -14; id: thirty_five"></a-entity>
+      <a-entity exhibit-point="pos: 15 1.5 -14; id: thirty_six"></a-entity>
+      <a-entity exhibit-point="pos: 18 1.5 -14; id: thirty_seven"></a-entity>
+      <a-entity exhibit-point="pos: 21 1.5 -14; id: thirty_eight"></a-entity>
+      <a-entity exhibit-point="pos: 24 1.5 -14; id: thirty_nine"></a-entity>
+      <a-entity exhibit-point="pos: 27 1.5 -14; id: forty"></a-entity>
+
+      <!-- Экспонаты 41-50 (пятый ряд) -->
+      <a-entity exhibit-point="pos: 0 1.5 -17; id: forty_one"></a-entity>
+      <a-entity exhibit-point="pos: 3 1.5 -17; id: forty_two"></a-entity>
+      <a-entity exhibit-point="pos: 6 1.5 -17; id: forty_three"></a-entity>
+      <a-entity exhibit-point="pos: 9 1.5 -17; id: forty_four"></a-entity>
+      <a-entity exhibit-point="pos: 12 1.5 -17; id: forty_five"></a-entity>
+      <a-entity exhibit-point="pos: 15 1.5 -17; id: forty_six"></a-entity>
+      <a-entity exhibit-point="pos: 18 1.5 -17; id: forty_seven"></a-entity>
+      <a-entity exhibit-point="pos: 21 1.5 -17; id: forty_eight"></a-entity>
+      <a-entity exhibit-point="pos: 24 1.5 -17; id: forty_nine"></a-entity>
+      <a-entity exhibit-point="pos: 27 1.5 -17; id: fifty"></a-entity>
+
+      <!-- Экспонаты 51-60 (шестой ряд) -->
+      <a-entity exhibit-point="pos: 0 1.5 -20; id: fifty_one"></a-entity>
+      <a-entity exhibit-point="pos: 3 1.5 -20; id: fifty_two"></a-entity>
+      <a-entity exhibit-point="pos: 6 1.5 -20; id: fifty_three"></a-entity>
+      <a-entity exhibit-point="pos: 9 1.5 -20; id: fifty_four"></a-entity>
+      <a-entity exhibit-point="pos: 12 1.5 -20; id: fifty_five"></a-entity>
+      <a-entity exhibit-point="pos: 15 1.5 -20; id: fifty_six"></a-entity>
+      <a-entity exhibit-point="pos: 18 1.5 -20; id: fifty_seven"></a-entity>
+      <a-entity exhibit-point="pos: 21 1.5 -20; id: fifty_eight"></a-entity>
+      <a-entity exhibit-point="pos: 24 1.5 -20; id: fifty_nine"></a-entity>
+      <a-entity exhibit-point="pos: 27 1.5 -20; id: sixty"></a-entity>
       
     </a-scene>
 
+    <!-- Всплывающее окно -->
+    <div id="info-modal">
+      <span id="close-btn" onclick="closeExhibit()">×</span>
+      <div id="modal-title">Заголовок</div>
+      <div id="modal-text">Текст описания...</div>
+    </div>
+
+    <!-- Подключаем словарь -->
+    <script src="data.js"></script>
+
     <script>
+      // Глобальный флаг для паузы движения
+      window.isUIOpen = false;
+
+      // --- Компонент расстановки экспонатов ---
+      AFRAME.registerComponent('exhibit-point', {
+        schema: {
+          pos: { type: 'vec3', default: '0 1.5 0' },
+          id: { type: 'string', default: 'one' }
+        },
+        init: function () {
+          this.el.setAttribute('position', this.data.pos);
+          this.el.setAttribute('gltf-model', 'url(info.glb)');
+          
+          this.el.addEventListener('click', () => {
+            const data = museumData[this.data.id];
+            if (!data) return;
+            
+            document.getElementById('modal-title').innerText = data.title || "Без названия";
+            document.getElementById('modal-text').innerText = data.fullText || "Описание готовится.";
+            document.getElementById('info-modal').style.display = 'block';
+            window.isUIOpen = true;
+          });
+        }
+      });
+
+      // --- Логика закрытия окна ---
+      function closeExhibit() {
+        document.getElementById('info-modal').style.display = 'none';
+        window.isUIOpen = false;
+      }
+      
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && window.isUIOpen) closeExhibit();
+      });
+      
+      document.getElementById('info-modal').addEventListener('click', (e) => {
+        if (e.target.id === 'info-modal') closeExhibit();
+      });
+
+      // --- компонент движения (с паузой) ---
       function parseVector(el, attr) {
         const val = el.getAttribute(attr);
         if (!val) return { x: 0, y: 0, z: 0 };
@@ -117,7 +281,7 @@
         schema: {
           speed: { type: 'number', default: 0.3 },
           radius: { type: 'number', default: 0.5 },
-          subSteps: { type: 'number', default: 4 } // Разбиваем движение на подшаги для защиты от туннелирования
+          subSteps: { type: 'number', default: 4 }
         },
 
         init: function() {
@@ -164,6 +328,9 @@
         },
 
         tick: function(time, delta) {
+          // ПАУЗА: если окно открыто, движение не обрабатывается
+          if (window.isUIOpen) return;
+          
           if (!this.walls.length) return;
 
           const pos = parseVector(this.el, 'position');
@@ -197,7 +364,6 @@
 
           if (moveX === 0 && moveZ === 0) return;
 
-          // Разбиваем движение на подшаги для предотвращения туннелирования
           let currentX = pos.x;
           let currentZ = pos.z;
 
@@ -211,7 +377,6 @@
             let collidedX = false;
             let collidedZ = false;
             
-            // Проверяем X
             for (const wall of this.walls) {
               if (this.checkCollision(newX, currentZ, wall, radius)) {
                 collidedX = true;
@@ -223,7 +388,6 @@
               currentX = newX;
             }
             
-            // Проверяем Z
             for (const wall of this.walls) {
               if (this.checkCollision(currentX, newZ, wall, radius)) {
                 collidedZ = true;
@@ -236,7 +400,6 @@
             }
           }
 
-          // Применяем финальную позицию
           this.el.setAttribute('position', { x: currentX, y: pos.y, z: currentZ });
         },
         
