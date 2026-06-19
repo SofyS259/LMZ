@@ -98,8 +98,8 @@
       
       <!-- Игрок -->
       <a-entity id="player" position="0 0 -5" player-movement>
-        <a-camera look-controls="pointerLockEnabled: true" wasd-controls="enabled: false" cursor="rayOrigin: mouse"></a-camera>
-      </a-entity>
+        <a-camera look-controls="pointerLockEnabled: true" wasd-controls="enabled: false" 
+          cursor="rayOrigin: mouse; raycaster.objects: .clickable"></a-camera>
 
       <!-- Невидимый пол -->
       <a-plane position="0 0 0" rotation="-90 0 0" width="200" height="200" visible="false"></a-plane>
@@ -147,8 +147,7 @@
       <a-entity gltf-model="url(enime.glb)" position="0 0 -5"></a-entity>
     -->
 
-      <!-- Cursor и Raycaster для взаимодействия -->
-      <a-entity id="cursor" cursor="fuse: false; rayOrigin: mouse" raycaster="objects: .clickable"></a-entity>
+   
      
       <!-- Модели с возможностью брать в руки -->
       <!-- Камни с информацией о медистом песчанике -->
@@ -466,13 +465,14 @@ AFRAME.registerComponent('draggable', {
   init: function () {
     this.isDragging = false;
     
-    this.el.addEventListener('mousedown', (e) => {
+    this.onMouseDown = () => {
       this.isDragging = true;
-    });
+      document.addEventListener('mousemove', this.onMouseMove);
+      document.addEventListener('mouseup', this.onMouseUp);
+    };
     
     this.onMouseMove = (e) => {
       if (!this.isDragging) return;
-      
       const pos = this.el.getAttribute('position');
       pos.x += e.movementX * 0.01;
       pos.y -= e.movementY * 0.01;
@@ -481,13 +481,15 @@ AFRAME.registerComponent('draggable', {
     
     this.onMouseUp = () => {
       this.isDragging = false;
+      document.removeEventListener('mousemove', this.onMouseMove);
+      document.removeEventListener('mouseup', this.onMouseUp);
     };
     
-    document.addEventListener('mousemove', this.onMouseMove);
-    document.addEventListener('mouseup', this.onMouseUp);
+    this.el.addEventListener('mousedown', this.onMouseDown);
   },
   
   remove: function() {
+    this.el.removeEventListener('mousedown', this.onMouseDown);
     document.removeEventListener('mousemove', this.onMouseMove);
     document.removeEventListener('mouseup', this.onMouseUp);
   }
@@ -500,20 +502,15 @@ AFRAME.registerComponent('show-info', {
     const key = this.el.getAttribute('data-info-index');
     
     this.el.addEventListener('click', () => {
-      if (!key || typeof museumData === 'undefined' || !museumData[key]) return;
-      
-      const info = museumData[key];
-      const title = info.title || "Без названия";
-      const text = info.fullText || info.shortText || "";
-      
-      if (!text) return;
-      
-      // Удаляем старый контейнер если есть
-      let oldContainer = document.querySelector('#info-text-3d');
-      if (oldContainer) oldContainer.remove();
-      
-      // Ставим паузу движения
-      window.isUIOpen = true;
+  const data = museumData[this.data.id];
+  if (!data) return;
+  
+  document.getElementById('modal-title').innerText = data.title || "Без названия";
+  document.getElementById('modal-text').innerText = data.fullText || data.shortText || "";
+  document.getElementById('info-modal').style.display = 'block';
+  window.isUIOpen = true;
+  document.exitPointerLock();
+});
       
       // Создаем контейнер
       let container = document.createElement('a-entity');
@@ -535,9 +532,9 @@ AFRAME.registerComponent('show-info', {
       titleText.setAttribute('align', 'center');
       titleText.setAttribute('width', '3');
       titleText.setAttribute('color', '#ffffff');
-      titleText.setAttribute('position', '0 0.85 0.01');
+      titleText.setAttribute('position', '0 0.85 0.05');
       titleText.setAttribute('wrap-count', '35');
-      titleText.setAttribute('font', 'mozillavr');
+      titleText.setAttribute('font', 'roboto');
       container.appendChild(titleText);
       
       // Разделительная линия под заголовком
@@ -546,7 +543,7 @@ AFRAME.registerComponent('show-info', {
       divider.setAttribute('height', '0.01');
       divider.setAttribute('color', '#ffffff');
       divider.setAttribute('opacity', '0.3');
-      divider.setAttribute('position', '0 0.65 0.01');
+      divider.setAttribute('position', '0 0.65 0.05');
       container.appendChild(divider);
       
       // Основной текст
@@ -555,7 +552,7 @@ AFRAME.registerComponent('show-info', {
       mainText.setAttribute('align', 'center');
       mainText.setAttribute('width', '2.8');
       mainText.setAttribute('color', '#ffffff');
-      mainText.setAttribute('position', '0 -0.1 0.01');
+      mainText.setAttribute('position', '0 -0.1 0.05');
       mainText.setAttribute('wrap-count', '45');
       mainText.setAttribute('line-height', '50');
       container.appendChild(mainText);
@@ -566,7 +563,7 @@ AFRAME.registerComponent('show-info', {
       closeBtn.setAttribute('align', 'center');
       closeBtn.setAttribute('width', '1');
       closeBtn.setAttribute('color', '#ffffff');
-      closeBtn.setAttribute('position', '1.4 0.95 0.02');
+      closeBtn.setAttribute('position', '1.4 0.95 0.06');
       closeBtn.setAttribute('class', 'clickable close-btn-3d');
       container.appendChild(closeBtn);
       
@@ -581,12 +578,12 @@ AFRAME.registerComponent('show-info', {
 camera.appendChild(container);
       
       // Автоматическое скрытие через 15 секунд
-      setTimeout(() => {
-        if (container.parentNode) {
-          container.remove();
-          window.isUIOpen = false;
-        }
-      }, 15000);
+      //setTimeout(() => {
+        //if (container.parentNode) {
+          //container.remove();
+         // window.isUIOpen = false;
+        //}
+      //}, 15000);
     });
   }
 });
