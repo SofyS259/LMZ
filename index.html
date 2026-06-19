@@ -100,6 +100,7 @@
       <a-entity id="player" position="0 0 -5" player-movement>
         <a-camera look-controls="pointerLockEnabled: true" wasd-controls="enabled: false" 
           cursor="rayOrigin: mouse; raycaster.objects: .clickable"></a-camera>
+        </a-entity>
 
       <!-- Невидимый пол -->
       <a-plane position="0 0 0" rotation="-90 0 0" width="200" height="200" visible="false"></a-plane>
@@ -584,17 +585,6 @@ AFRAME.registerComponent('show-info', {
     });
   }
 });
-      
-      const camera = document.querySelector('#player a-camera');
-camera.appendChild(container);
-      
-      // Автоматическое скрытие через 15 секунд
-      //setTimeout(() => {
-        //if (container.parentNode) {
-          //container.remove();
-         // window.isUIOpen = false;
-        //}
-      //}, 15000);
     
   </body>
 </html>
