@@ -518,8 +518,8 @@ AFRAME.registerComponent('show-info', {
       // Создаем контейнер
       let container = document.createElement('a-entity');
       container.id = 'info-text-3d';
-      container.setAttribute('position', '0 1.6 -2.5'); // Перед камерой
-      container.setAttribute('look-at', '#player [camera]'); // Всегда смотрит на камеру
+      container.setAttribute('position', '0 0 -2.5'); // ← прямо перед глазами
+      
       
       // Фон панели (тёмно-красный, как в модальном окне)
       let bg = document.createElement('a-plane');
