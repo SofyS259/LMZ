@@ -465,28 +465,18 @@
 AFRAME.registerComponent('draggable', {
   init: function () {
     this.isDragging = false;
-    this.lastX = 0;
-    this.lastY = 0;
     
     this.el.addEventListener('mousedown', (e) => {
       this.isDragging = true;
-      this.lastX = e.clientX;
-      this.lastY = e.clientY;
     });
     
     this.onMouseMove = (e) => {
       if (!this.isDragging) return;
       
-      const deltaX = e.clientX - this.lastX;
-      const deltaY = e.clientY - this.lastY;
-      
       const pos = this.el.getAttribute('position');
-      pos.x += deltaX * 0.01;
-      pos.y -= deltaY * 0.01;
+      pos.x += e.movementX * 0.01;
+      pos.y -= e.movementY * 0.01;
       this.el.setAttribute('position', pos);
-      
-      this.lastX = e.clientX;
-      this.lastY = e.clientY;
     };
     
     this.onMouseUp = () => {
@@ -587,7 +577,8 @@ AFRAME.registerComponent('show-info', {
         window.isUIOpen = false;
       });
       
-      document.querySelector('a-scene').appendChild(container);
+      const camera = document.querySelector('#player a-camera');
+camera.appendChild(container);
       
       // Автоматическое скрытие через 15 секунд
       setTimeout(() => {
