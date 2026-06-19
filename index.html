@@ -143,33 +143,42 @@
 
       <!-- Cursor и Raycaster для взаимодействия -->
       <a-entity id="cursor" cursor="fuse: false; rayOrigin: mouse" raycaster="objects: .clickable"></a-entity>
-      <a-entity id="camera" camera look-controls wasd-controls position="0 1.6 5">
+      <a-entity id="camera" camera look-controls wasd-controls position="0 1.6 5"></a-entity>
      
       <!-- Модели с возможностью брать в руки -->
-      <a-entity gltf-model="url(kam1.glb)" position="0 0 -5" class="clickable grabbable" data-info-index="four"></a-entity>
-      <a-entity gltf-model="url(kam2.glb)" position="0 0 -5" class="clickable grabbable" data-info-index="four"></a-entity>
-      <a-entity gltf-model="url(kam3.glb)" position="0 0 -5" class="clickable grabbable" data-info-index="four"></a-entity>
-      <a-entity gltf-model="url(kam4.glb)" position="0 0 -5" class="clickable grabbable" data-info-index="four"></a-entity>
-      <a-entity gltf-model="url(kam5.glb)" position="0 0 -5" class="clickable grabbable" data-info-index="four"></a-entity>
-      <a-entity gltf-model="url(med1.glb)" position="0 0 -5" class="clickable grabbable" data-info-index="four"></a-entity>
-      <a-entity gltf-model="url(med2.glb)" position="0 0 -5" class="clickable grabbable" data-info-index="four"></a-entity>
-      <a-entity gltf-model="url(med3.glb)" position="0 0 -5" class="clickable grabbable" data-info-index="four"></a-entity>
-      <a-entity gltf-model="url(med4.glb)" position="0 0 -5" class="clickable grabbable" data-info-index="four"></a-entity>
-      <a-entity gltf-model="url(med5.glb)" position="0 0 -5" class="clickable grabbable" data-info-index="four"></a-entity>
-      <a-entity gltf-model="url(med6.glb)" position="0 0 -5" class="clickable grabbable" data-info-index="four"></a-entity>
-      <a-entity gltf-model="url(med7.glb)" position="0 0 -5" class="clickable grabbable" data-info-index="four"></a-entity>
-      <a-entity gltf-model="url(med8.glb)" position="0 0 -5" class="clickable grabbable" data-info-index="four"></a-entity>
-      <a-entity gltf-model="url(med9.glb)" position="0 0 -5" class="clickable grabbable" data-info-index="four"></a-entity>
-      <a-entity gltf-model="url(med10.glb)" position="0 0 -5" class="clickable grabbable" data-info-index="four"></a-entity>
-      <a-entity gltf-model="url(rec1.glb)" position="0 0 -5" class="clickable grabbable"></a-entity>
-      <a-entity gltf-model="url(rec2.glb)" position="0 0 -5" class="clickable grabbable"></a-entity>
-      <a-entity gltf-model="url(rec3.glb)" position="0 0 -5" class="clickable grabbable"></a-entity>
-      <a-entity gltf-model="url(rec4.glb)" position="0 0 -5" class="clickable grabbable"></a-entity>
-      <a-entity gltf-model="url(suv.glb)" position="0 0 -5" class="clickable grabbable"></a-entity>
-      <a-entity gltf-model="url(yadro11.glb)" position="0 0 -5" class="clickable grabbable"></a-entity>
-      <a-entity gltf-model="url(yadro12.glb)" position="0 0 -5" class="clickable grabbable"></a-entity>
-      <a-entity gltf-model="url(yadro21.glb)" position="0 0 -5" class="clickable grabbable"></a-entity>
-      <a-entity gltf-model="url(yadro22.glb)" position="0 0 -5" class="clickable grabbable"></a-entity>
+      <!-- Камни с информацией о медистом песчанике -->
+      <a-entity gltf-model="url(kam1.glb)" position="0 0 -5" class="clickable" draggable show-info data-info-index="four"></a-entity>
+      <a-entity gltf-model="url(kam2.glb)" position="0 0 -5" class="clickable" draggable show-info data-info-index="four"></a-entity>
+      <a-entity gltf-model="url(kam3.glb)" position="0 0 -5" class="clickable" draggable show-info data-info-index="four"></a-entity>
+      <a-entity gltf-model="url(kam4.glb)" position="0 0 -5" class="clickable" draggable show-info data-info-index="four"></a-entity>
+      <a-entity gltf-model="url(kam5.glb)" position="0 0 -5" class="clickable" draggable show-info data-info-index="four"></a-entity>
+
+      <!-- Медь с информацией о медистом песчанике -->
+      <a-entity gltf-model="url(med1.glb)" position="0 0 -5" class="clickable" draggable show-info data-info-index="four"></a-entity>
+      <a-entity gltf-model="url(med2.glb)" position="0 0 -5" class="clickable" draggable show-info data-info-index="four"></a-entity>
+      <a-entity gltf-model="url(med3.glb)" position="0 0 -5" class="clickable" draggable show-info data-info-index="four"></a-entity>
+      <a-entity gltf-model="url(med4.glb)" position="0 0 -5" class="clickable" draggable show-info data-info-index="four"></a-entity>
+      <a-entity gltf-model="url(med5.glb)" position="0 0 -5" class="clickable" draggable show-info data-info-index="four"></a-entity>
+      <a-entity gltf-model="url(med6.glb)" position="0 0 -5" class="clickable" draggable show-info data-info-index="four"></a-entity>
+      <a-entity gltf-model="url(med7.glb)" position="0 0 -5" class="clickable" draggable show-info data-info-index="four"></a-entity>
+      <a-entity gltf-model="url(med8.glb)" position="0 0 -5" class="clickable" draggable show-info data-info-index="four"></a-entity>
+      <a-entity gltf-model="url(med9.glb)" position="0 0 -5" class="clickable" draggable show-info data-info-index="four"></a-entity>
+      <a-entity gltf-model="url(med10.glb)" position="0 0 -5" class="clickable" draggable show-info data-info-index="four"></a-entity>
+
+      <!-- журналы без информации -->
+      <a-entity gltf-model="url(rec1.glb)" position="0 0 -5" class="clickable" draggable show-info></a-entity>
+      <a-entity gltf-model="url(rec2.glb)" position="0 0 -5" class="clickable" draggable show-info></a-entity>
+      <a-entity gltf-model="url(rec3.glb)" position="0 0 -5" class="clickable" draggable show-info></a-entity>
+      <a-entity gltf-model="url(rec4.glb)" position="0 0 -5" class="clickable" draggable show-info></a-entity>
+
+      <!-- Сувениры без информации -->
+      <a-entity gltf-model="url(suv.glb)" position="0 0 -5" class="clickable" draggable show-info></a-entity>
+
+      <!-- Ядра без информации -->
+      <a-entity gltf-model="url(yadro11.glb)" position="0 0 -5" class="clickable" draggable show-info></a-entity>
+      <a-entity gltf-model="url(yadro12.glb)" position="0 0 -5" class="clickable" draggable show-info></a-entity>
+      <a-entity gltf-model="url(yadro21.glb)" position="0 0 -5" class="clickable" draggable show-info></a-entity>
+      <a-entity gltf-model="url(yadro22.glb)" position="0 0 -5" class="clickable" draggable show-info></a-entity>
 
       <!-- Текст для экспонатов на табличках -->
       <a-entity exhibit-point="pos: -8.439 1.200 -12.706; id: one"></a-entity>
