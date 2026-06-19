@@ -275,14 +275,15 @@
   this.el.classList.add('clickable');                  // ← заодно пункт 6
   
   this.el.addEventListener('click', () => {
-      const data = museumData[this.data.id];
-      if (!data) return;
-      
-      document.getElementById('modal-title').innerText = data.title || "Без названия";
-      document.getElementById('modal-text').innerText = data.fullText || data.shortText || "";
-      document.getElementById('info-modal').style.display = 'block';
-      window.isUIOpen = true;
-    });
+    const data = museumData[this.data.id];
+    if (!data) return;
+    
+    document.getElementById('modal-title').innerText = data.title || "Без названия";
+    document.getElementById('modal-text').innerText = data.fullText || data.shortText || "";
+    document.getElementById('info-modal').style.display = 'block';
+    window.isUIOpen = true;
+    document.exitPointerLock();
+  });
   }
 });
       // --- Логика закрытия окна ---
@@ -502,27 +503,31 @@ AFRAME.registerComponent('show-info', {
     const key = this.el.getAttribute('data-info-index');
     
     this.el.addEventListener('click', () => {
-  const data = museumData[this.data.id];
-  if (!data) return;
-  
-  document.getElementById('modal-title').innerText = data.title || "Без названия";
-  document.getElementById('modal-text').innerText = data.fullText || data.shortText || "";
-  document.getElementById('info-modal').style.display = 'block';
-  window.isUIOpen = true;
-  document.exitPointerLock();
-});
+      if (!key || typeof museumData === 'undefined' || !museumData[key]) return;
+      
+      const info = museumData[key];
+      const title = info.title || "Без названия";
+      const text = info.fullText || info.shortText || "";
+      
+      if (!text) return;
+      
+      // Удаляем старый контейнер если есть
+      let oldContainer = document.querySelector('#info-text-3d');
+      if (oldContainer) oldContainer.remove();
+      
+      // Ставим паузу движения
+      window.isUIOpen = true;
       
       // Создаем контейнер
       let container = document.createElement('a-entity');
       container.id = 'info-text-3d';
-      container.setAttribute('position', '0 0 -2.5'); // ← прямо перед глазами
+      container.setAttribute('position', '0 0 -2.5');
       
-      
-      // Фон панели (тёмно-красный, как в модальном окне)
+      // Фон панели
       let bg = document.createElement('a-plane');
       bg.setAttribute('width', '3.2');
       bg.setAttribute('height', '2.2');
-      bg.setAttribute('color', '#800000'); // Maroon
+      bg.setAttribute('color', '#800000');
       bg.setAttribute('opacity', '0.9');
       container.appendChild(bg);
       
@@ -537,7 +542,7 @@ AFRAME.registerComponent('show-info', {
       titleText.setAttribute('font', 'roboto');
       container.appendChild(titleText);
       
-      // Разделительная линия под заголовком
+      // Разделительная линия
       let divider = document.createElement('a-plane');
       divider.setAttribute('width', '2.8');
       divider.setAttribute('height', '0.01');
@@ -557,7 +562,7 @@ AFRAME.registerComponent('show-info', {
       mainText.setAttribute('line-height', '50');
       container.appendChild(mainText);
       
-      // Кнопка закрытия (крестик)
+      // Кнопка закрытия
       let closeBtn = document.createElement('a-text');
       closeBtn.setAttribute('value', '×');
       closeBtn.setAttribute('align', 'center');
@@ -575,6 +580,12 @@ AFRAME.registerComponent('show-info', {
       });
       
       const camera = document.querySelector('#player a-camera');
+      camera.appendChild(container);
+    });
+  }
+});
+      
+      const camera = document.querySelector('#player a-camera');
 camera.appendChild(container);
       
       // Автоматическое скрытие через 15 секунд
@@ -584,8 +595,6 @@ camera.appendChild(container);
          // window.isUIOpen = false;
         //}
       //}, 15000);
-    });
-  }
-});
+    
   </body>
 </html>
