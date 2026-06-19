@@ -46,14 +46,14 @@
 </style>
   </head>
   <body>
-    <a-entity gltf-model="url(kam1.glb)" 
+    <a-scene background="color: #F0F0F0;">
+       <a-entity gltf-model="url(kam1.glb)" 
           position="0 0 -5" 
           class="clickable"
           draggable
           show-info
           data-info-index="4">
           </a-entity>
-    <a-scene background="color: #F0F0F0;">
       
       <!-- Базовый свет -->
       <a-light type="ambient" color="#ffffff" intensity="0.8"></a-light>
@@ -151,9 +151,7 @@
       <!-- Cursor и Raycaster для взаимодействия -->
       <a-entity id="cursor" cursor="fuse: false; rayOrigin: mouse" raycaster="objects: .clickable"></a-entity>
       <a-entity id="camera" camera look-controls wasd-controls position="0 1.6 5">
-      <a-entity id="cursor" cursor="fuse: false"></a-entity>
-      </a-entity>
-
+     
       <!-- Модели с возможностью брать в руки -->
       <a-entity gltf-model="url(kam1.glb)" position="0 0 -5" class="clickable grabbable" data-info-index="4"></a-entity>
       <a-entity gltf-model="url(kam2.glb)" position="0 0 -5" class="clickable grabbable" data-info-index="4"></a-entity>
