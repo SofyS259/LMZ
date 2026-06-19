@@ -3,8 +3,10 @@
   <head>
     <meta charset="utf-8">
     <title>VR Museum</title>
-    <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
+
     <script src="aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
+    
     <style>
   #info-modal {
     display: none;
@@ -134,7 +136,7 @@
       <a-entity gltf-model="url(firstpushka.glb)" position="0 0 -5"></a-entity>
       <a-entity gltf-model="url(holl.glb)" position="0 0 -5"></a-entity>
       <a-entity gltf-model="url(holl2.glb)" position="0 0 -5"></a-entity>
-      <a-entity gltf-model="url(info.glb)" position="0 0 -5"></a-entity>
+      
       <a-entity gltf-model="url(lable.glb)" position="0 0 -5"></a-entity>
       <a-entity gltf-model="url(stena.glb)" position="0 0 -5"></a-entity>
       <a-entity gltf-model="url(stolb.glb)" position="0 0 -5"></a-entity>
@@ -278,7 +280,7 @@
       if (!data) return;
       
       document.getElementById('modal-title').innerText = data.title || "Без названия";
-      document.getElementById('modal-text').innerText = data.fullText;
+      document.getElementById('modal-text').innerText = data.fullText || data.shortText || "";
       document.getElementById('info-modal').style.display = 'block';
       window.isUIOpen = true;
     });
@@ -527,7 +529,7 @@ AFRAME.registerComponent('show-info', {
       let container = document.createElement('a-entity');
       container.id = 'info-text-3d';
       container.setAttribute('position', '0 1.6 -2.5'); // Перед камерой
-      container.setAttribute('look-at', '[camera]'); // Всегда смотрит на камеру
+      container.setAttribute('look-at', '#player [camera]'); // Всегда смотрит на камеру
       
       // Фон панели (тёмно-красный, как в модальном окне)
       let bg = document.createElement('a-plane');
@@ -575,7 +577,7 @@ AFRAME.registerComponent('show-info', {
       closeBtn.setAttribute('width', '1');
       closeBtn.setAttribute('color', '#ffffff');
       closeBtn.setAttribute('position', '1.4 0.95 0.02');
-      closeBtn.setAttribute('class', 'close-btn-3d');
+      closeBtn.setAttribute('class', 'clickable close-btn-3d');
       container.appendChild(closeBtn);
       
       // Обработчик клика на крестик
