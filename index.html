@@ -48,6 +48,152 @@
     color: #ffffff;
   }
   #close-btn:hover { color: #cccccc; }
+
+      /* Стили для викторины */
+#quiz-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 99999;
+  justify-content: center;
+  align-items: center;
+}
+
+#quiz-modal .modal-content {
+  background: rgba(128, 0, 0, 0.95);
+  color: #ffffff;
+  padding: 40px;
+  border-radius: 12px;
+  max-width: 600px;
+  width: 90%;
+  position: relative;
+}
+
+.quiz-title {
+  font-size: 26px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.quiz-logo {
+  display: block;
+  max-width: 180px;
+  height: auto;
+  margin: 15px auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+.quiz-progress {
+  font-size: 16px;
+  text-align: center;
+  opacity: 0.8;
+  margin-bottom: 20px;
+}
+
+.quiz-question {
+  font-size: 20px;
+  margin-bottom: 20px;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.quiz-answers {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.quiz-answer-btn {
+  padding: 15px 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s;
+}
+
+.quiz-answer-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: #ffffff;
+}
+
+.quiz-answer-btn.correct {
+  background: rgba(0, 180, 0, 0.5);
+  border-color: #00ff00;
+}
+
+.quiz-answer-btn.wrong {
+  background: rgba(180, 0, 0, 0.5);
+  border-color: #ff0000;
+}
+
+.quiz-result {
+  text-align: center;
+  padding: 20px;
+}
+
+.quiz-result h2 {
+  font-size: 28px;
+  margin-bottom: 15px;
+}
+
+.quiz-result .score {
+  font-size: 48px;
+  font-weight: bold;
+  margin: 20px 0;
+}
+
+.quiz-result.passed .score { color: #00ff00; }
+.quiz-result.failed .score { color: #ff6666; }
+
+.quiz-restart-btn {
+  padding: 12px 30px;
+  background: #ffffff;
+  color: #800000;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+.quiz-restart-btn:hover {
+  background: #f0f0f0;
+}
+
+/* Индикатор квеста */
+.hint-indicator {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(128, 0, 0, 0.9);
+  color: white;
+  padding: 15px 30px;
+  border-radius: 8px;
+  font-size: 18px;
+  z-index: 9999;
+  display: none;
+}
+
+/* Сообщение о квесте */
+@keyframes fadeOut {
+  0% { opacity: 0; transform: translate(-50%, -20px); }
+  15% { opacity: 1; transform: translate(-50%, 0); }
+  85% { opacity: 1; transform: translate(-50%, 0); }
+  100% { opacity: 0; transform: translate(-50%, -20px); }
+}
 </style>
   </head>
   <body>
@@ -192,9 +338,9 @@
       <a-entity gltf-model="url(yadro22.glb)" position="0 0 -5" class="clickable" draggable></a-entity>
 
       <!-- Текст для экспонатов на табличках -->
-      <a-entity exhibit-point="pos: -8.439 1.200 -12.706; id: one"></a-entity>
-      <a-entity exhibit-point="pos: -3.638 1.200 -10.815; id: two"></a-entity>
-      <a-entity exhibit-point="pos: -15.241 1.200 -10.815; id: three"></a-entity>
+      <a-entity exhibit-point="pos: -8.439 1.200 -12.706; id: one" rotation="0 115 0"></a-entity>
+      <a-entity exhibit-point="pos: -3.638 1.200 -10.815; id: two" rotation="0 90 0"></a-entity>
+      <a-entity exhibit-point="pos: -15.241 1.200 -10.815; id: three" rotation="0 90 0"></a-entity>
       <a-entity exhibit-point="pos: -12.360 1.200 -21.070; id: five"></a-entity>
       <a-entity exhibit-point="pos: -5.769 1.200 -21.072; id: six"></a-entity>
       <a-entity exhibit-point="pos: 7.245 1.200 -32.498; id: seven"></a-entity>
@@ -252,9 +398,26 @@
       <a-entity exhibit-point="pos: 21.497 2.867 -11.890; id: fifty_eight"></a-entity>
       <a-entity exhibit-point="pos: 8.386 2.867 -57.576; id: fifty_nine"></a-entity>
       <a-entity exhibit-point="pos: 8.386 2.867 -17.764; id: sixty"></a-entity>
-      
+
+      <!-- Триггер викторины -->
+<a-entity exhibit-point="pos: 15.712 1.200 -7.644; id: quiz_trigger" data-quest-trigger="quiz"></a-entity>
       
     </a-scene>
+
+    <!-- Модальное окно викторины -->
+<div id="quiz-modal">
+  <div class="modal-content">
+    <span id="quiz-close-btn" class="close-btn">×</span>
+    <div id="quiz-content">
+      <!-- Сюда будет подставляться содержимое через JS -->
+    </div>
+  </div>
+</div>
+
+<!-- Индикатор квеста поиска -->
+<div id="quest-hint" class="hint-indicator">
+  🔍 Найдено секретов: <span id="found-count">0</span> / <span id="total-count">3</span>
+</div>
 
     <!-- Всплывающее окно -->
     <div id="info-modal">
@@ -265,10 +428,201 @@
 
     <!-- Подключаем словарь -->
     <script src="data.js"></script>
+    <script src="quiz.js"></script>
 
     <script>
       // Глобальный флаг для паузы движения
       window.isUIOpen = false;
+      // --- Система викторины ---
+window.quizState = {
+  currentQuestion: 0,
+  correctAnswers: 0,
+  completed: false
+};
+
+function startQuiz() {
+  window.quizState = {
+    currentQuestion: 0,
+    correctAnswers: 0,
+    completed: false
+  };
+  showQuizQuestion();
+  document.getElementById('quiz-modal').style.display = 'flex';
+  window.isUIOpen = true;
+  document.exitPointerLock();
+}
+
+function showQuizQuestion() {
+  const q = quizData.questions[window.quizState.currentQuestion];
+  const total = quizData.questions.length;
+  const current = window.quizState.currentQuestion + 1;
+  
+  let html = `
+    <div class="quiz-title">${quizData.title}</div>
+    <img src="mz.png" alt="Логотип МЗ" class="quiz-logo">
+    <div class="quiz-progress">Вопрос ${current}/${total}</div>
+    <div class="quiz-question">${q.question}</div>
+    <div class="quiz-answers">
+  `;
+  
+  q.answers.forEach((answer, index) => {
+    html += `<button class="quiz-answer-btn" onclick="answerQuiz(${index})">${answer}</button>`;
+  });
+  
+  html += `</div>`;
+  document.getElementById('quiz-content').innerHTML = html;
+}
+
+function answerQuiz(selectedIndex) {
+  const q = quizData.questions[window.quizState.currentQuestion];
+  const buttons = document.querySelectorAll('.quiz-answer-btn');
+  
+  buttons.forEach(btn => btn.disabled = true);
+  
+  buttons[q.correct].classList.add('correct');
+  if (selectedIndex !== q.correct) {
+    buttons[selectedIndex].classList.add('wrong');
+  } else {
+    window.quizState.correctAnswers++;
+  }
+  
+  setTimeout(() => {
+    window.quizState.currentQuestion++;
+    
+    if (window.quizState.currentQuestion < quizData.questions.length) {
+      showQuizQuestion();
+    } else {
+      showQuizResult();
+    }
+  }, 1500);
+}
+
+function showQuizResult() {
+  const correct = window.quizState.correctAnswers;
+  const total = quizData.questions.length;
+  const passed = correct >= quizData.passingScore;
+  
+  window.quizState.completed = true;
+  
+  if (passed) {
+    registerQuestClick('quest1');
+  }
+  
+  let html = `
+    <div class="quiz-result ${passed ? 'passed' : 'failed'}">
+      <h2>${passed ? '🏆 Поздравляем!' : '😔 Не хватило баллов'}</h2>
+      <div class="score">${correct} / ${total}</div>
+      <p>${passed 
+        ? `Вы правильно ответили на ${correct} из ${total} вопросов. Квест пройден!` 
+        : `Вы ответили правильно на ${correct} из ${total}. Нужно минимум ${quizData.passingScore}.`}</p>
+      <button class="quiz-restart-btn" onclick="restartQuiz()">${passed ? 'Пройти ещё раз' : 'Попробовать снова'}</button>
+      <br><br>
+      <button class="quiz-restart-btn" onclick="closeQuiz()" style="background: #cccccc;">Закрыть</button>
+    </div>
+  `;
+  
+  document.getElementById('quiz-content').innerHTML = html;
+}
+
+function restartQuiz() {
+  startQuiz();
+}
+
+function closeQuiz() {
+  document.getElementById('quiz-modal').style.display = 'none';
+  window.isUIOpen = false;
+}
+
+// --- Система поиска предметов ---
+window.searchQuest = {
+  totalSecrets: 3,
+  foundSecrets: new Set(),
+  active: false
+};
+
+function activateSearchQuest() {
+  window.searchQuest.active = true;
+  document.getElementById('quest-hint').style.display = 'block';
+  document.getElementById('total-count').innerText = window.searchQuest.totalSecrets;
+  updateFoundCount();
+  showQuestMessage('🔍 Найдите 3 секретных предмета в музее!');
+}
+
+function updateFoundCount() {
+  document.getElementById('found-count').innerText = window.searchQuest.foundSecrets.size;
+}
+
+function registerSecretFound(secretId) {
+  if (window.searchQuest.foundSecrets.has(secretId)) return;
+  
+  window.searchQuest.foundSecrets.add(secretId);
+  updateFoundCount();
+  showQuestMessage(`✨ Вы нашли секрет! (${window.searchQuest.foundSecrets.size}/${window.searchQuest.totalSecrets})`);
+  
+  if (window.searchQuest.foundSecrets.size >= window.searchQuest.totalSecrets) {
+    setTimeout(() => {
+      showQuestMessage('🏆 Все секреты найдены! Квест пройден!');
+      registerQuestClick('quest2');
+      document.getElementById('quest-hint').style.display = 'none';
+    }, 2000);
+  }
+}
+
+// --- Система отслеживания квестов ---
+window.questProgress = {
+  click1: false,
+  click2: false
+};
+
+function registerQuestClick(questId) {
+  if (questId === 'quest1') {
+    window.questProgress.click1 = true;
+    showQuestMessage('🎉 Вы прошли викторину!');
+  } else if (questId === 'quest2') {
+    window.questProgress.click2 = true;
+    showQuestMessage('🎉 Вы нашли все секреты!');
+  }
+  
+  if (window.questProgress.click1 && window.questProgress.click2) {
+    setTimeout(() => {
+      showQuestMessage('🏆 Поздравляем! Вы прошли все квесты!');
+      sendQuestStats();
+    }, 2000);
+  }
+  
+  localStorage.setItem('vrMuseumQuests', JSON.stringify(window.questProgress));
+}
+
+function showQuestMessage(text) {
+  const msg = document.createElement('div');
+  msg.style.cssText = `
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(128, 0, 0, 0.95);
+    color: white;
+    padding: 20px 40px;
+    border-radius: 10px;
+    font-size: 22px;
+    font-weight: bold;
+    z-index: 99999;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+    animation: fadeOut 3s forwards;
+  `;
+  msg.innerText = text;
+  document.body.appendChild(msg);
+  
+  setTimeout(() => msg.remove(), 3000);
+}
+
+// Закрытие квиза по крестику
+document.addEventListener('DOMContentLoaded', () => {
+  const closeBtn = document.getElementById('quiz-close-btn');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', closeQuiz);
+  }
+});
 
       // --- Компонент расстановки экспонатов ---
       AFRAME.registerComponent('exhibit-point', {
@@ -282,15 +636,27 @@
   this.el.classList.add('clickable');                  // ← заодно пункт 6
   
   this.el.addEventListener('click', () => {
-    const data = museumData[this.data.id];
-    if (!data) return;
-    
-    document.getElementById('modal-title').innerText = data.title || "Без названия";
-    document.getElementById('modal-text').innerText = data.fullText || data.shortText || "";
-    document.getElementById('info-modal').style.display = 'block';
-    window.isUIOpen = true;
-    document.exitPointerLock();
-  });
+  // Проверяем, является ли это триггером квеста
+  const questTrigger = this.el.getAttribute('data-quest-trigger');
+  if (questTrigger === 'quiz') {
+    startQuiz();
+    return;
+  }
+  if (questTrigger === 'search') {
+    activateSearchQuest();
+    return;
+  }
+  
+  // Обычная логика показа информации
+  const data = museumData[this.data.id];
+  if (!data) return;
+  
+  document.getElementById('modal-title').innerText = data.title || "Без названия";
+  document.getElementById('modal-text').innerText = data.fullText || data.shortText || "";
+  document.getElementById('info-modal').style.display = 'block';
+  window.isUIOpen = true;
+  document.exitPointerLock();
+});
   }
 });
       // --- Логика закрытия окна ---
