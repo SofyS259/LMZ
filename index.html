@@ -47,13 +47,6 @@
   </head>
   <body>
     <a-scene background="color: #F0F0F0;">
-       <a-entity gltf-model="url(kam1.glb)" 
-          position="0 0 -5" 
-          class="clickable"
-          draggable
-          show-info
-          data-info-index="4">
-          </a-entity>
       
       <!-- Базовый свет -->
       <a-light type="ambient" color="#ffffff" intensity="0.8"></a-light>
@@ -153,21 +146,21 @@
       <a-entity id="camera" camera look-controls wasd-controls position="0 1.6 5">
      
       <!-- Модели с возможностью брать в руки -->
-      <a-entity gltf-model="url(kam1.glb)" position="0 0 -5" class="clickable grabbable" data-info-index="4"></a-entity>
-      <a-entity gltf-model="url(kam2.glb)" position="0 0 -5" class="clickable grabbable" data-info-index="4"></a-entity>
-      <a-entity gltf-model="url(kam3.glb)" position="0 0 -5" class="clickable grabbable" data-info-index="4"></a-entity>
-      <a-entity gltf-model="url(kam4.glb)" position="0 0 -5" class="clickable grabbable" data-info-index="4"></a-entity>
-      <a-entity gltf-model="url(kam5.glb)" position="0 0 -5" class="clickable grabbable" data-info-index="4"></a-entity>
-      <a-entity gltf-model="url(med1.glb)" position="0 0 -5" class="clickable grabbable" data-info-index="4"></a-entity>
-      <a-entity gltf-model="url(med2.glb)" position="0 0 -5" class="clickable grabbable" data-info-index="4"></a-entity>
-      <a-entity gltf-model="url(med3.glb)" position="0 0 -5" class="clickable grabbable" data-info-index="4"></a-entity>
-      <a-entity gltf-model="url(med4.glb)" position="0 0 -5" class="clickable grabbable" data-info-index="4"></a-entity>
-      <a-entity gltf-model="url(med5.glb)" position="0 0 -5" class="clickable grabbable" data-info-index="4"></a-entity>
-      <a-entity gltf-model="url(med6.glb)" position="0 0 -5" class="clickable grabbable" data-info-index="4"></a-entity>
-      <a-entity gltf-model="url(med7.glb)" position="0 0 -5" class="clickable grabbable" data-info-index="4"></a-entity>
-      <a-entity gltf-model="url(med8.glb)" position="0 0 -5" class="clickable grabbable" data-info-index="4"></a-entity>
-      <a-entity gltf-model="url(med9.glb)" position="0 0 -5" class="clickable grabbable" data-info-index="4"></a-entity>
-      <a-entity gltf-model="url(med10.glb)" position="0 0 -5" class="clickable grabbable" data-info-index="4"></a-entity>
+      <a-entity gltf-model="url(kam1.glb)" position="0 0 -5" class="clickable grabbable" data-info-index="four"></a-entity>
+      <a-entity gltf-model="url(kam2.glb)" position="0 0 -5" class="clickable grabbable" data-info-index="four"></a-entity>
+      <a-entity gltf-model="url(kam3.glb)" position="0 0 -5" class="clickable grabbable" data-info-index="four"></a-entity>
+      <a-entity gltf-model="url(kam4.glb)" position="0 0 -5" class="clickable grabbable" data-info-index="four"></a-entity>
+      <a-entity gltf-model="url(kam5.glb)" position="0 0 -5" class="clickable grabbable" data-info-index="four"></a-entity>
+      <a-entity gltf-model="url(med1.glb)" position="0 0 -5" class="clickable grabbable" data-info-index="four"></a-entity>
+      <a-entity gltf-model="url(med2.glb)" position="0 0 -5" class="clickable grabbable" data-info-index="four"></a-entity>
+      <a-entity gltf-model="url(med3.glb)" position="0 0 -5" class="clickable grabbable" data-info-index="four"></a-entity>
+      <a-entity gltf-model="url(med4.glb)" position="0 0 -5" class="clickable grabbable" data-info-index="four"></a-entity>
+      <a-entity gltf-model="url(med5.glb)" position="0 0 -5" class="clickable grabbable" data-info-index="four"></a-entity>
+      <a-entity gltf-model="url(med6.glb)" position="0 0 -5" class="clickable grabbable" data-info-index="four"></a-entity>
+      <a-entity gltf-model="url(med7.glb)" position="0 0 -5" class="clickable grabbable" data-info-index="four"></a-entity>
+      <a-entity gltf-model="url(med8.glb)" position="0 0 -5" class="clickable grabbable" data-info-index="four"></a-entity>
+      <a-entity gltf-model="url(med9.glb)" position="0 0 -5" class="clickable grabbable" data-info-index="four"></a-entity>
+      <a-entity gltf-model="url(med10.glb)" position="0 0 -5" class="clickable grabbable" data-info-index="four"></a-entity>
       <a-entity gltf-model="url(rec1.glb)" position="0 0 -5" class="clickable grabbable"></a-entity>
       <a-entity gltf-model="url(rec2.glb)" position="0 0 -5" class="clickable grabbable"></a-entity>
       <a-entity gltf-model="url(rec3.glb)" position="0 0 -5" class="clickable grabbable"></a-entity>
@@ -478,34 +471,38 @@ AFRAME.registerComponent('draggable', {
 // Компонент для показа текста из data.js
 AFRAME.registerComponent('show-info', {
   init: function () {
-    const index = this.el.getAttribute('data-info-index');
+    const key = this.el.getAttribute('data-info-index');
     
     this.el.addEventListener('click', () => {
-      if (typeof data !== 'undefined' && data[index]) {
-        const infoText = data[index];
+      if (typeof museumData !== 'undefined' && museumData[key]) {
+        const info = museumData[key];
+        const infoText = info.fullText || info.shortText || info.title;
+        
         // Создаем или показываем текстовую сущность
         let textEl = document.querySelector('#info-text');
         if (!textEl) {
-          textEl = document.createElement('a-text');
+          textEl = document.createElement('a-entity');
           textEl.id = 'info-text';
           textEl.setAttribute('position', '0 2 -4');
-          textEl.setAttribute('value', infoText);
-          textEl.setAttribute('align', 'center');
-          textEl.setAttribute('width', '10');
+          textEl.setAttribute('text', {
+            value: infoText,
+            align: 'center',
+            width: 8,
+            color: '#ffffff'
+          });
           document.querySelector('a-scene').appendChild(textEl);
         } else {
-          textEl.setAttribute('value', infoText);
+          textEl.setAttribute('text', 'value', infoText);
           textEl.setAttribute('visible', 'true');
         }
         
-        // Скрыть через 5 секунд
+        // Скрыть через 8 секунд
         setTimeout(() => {
           if (textEl) textEl.setAttribute('visible', 'false');
-        }, 5000);
+        }, 8000);
       }
     });
   }
 });
-</script>
   </body>
 </html>
