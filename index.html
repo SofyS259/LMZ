@@ -400,7 +400,12 @@
       <a-entity exhibit-point="pos: 8.386 2.867 -17.764; id: sixty"></a-entity>
 
       <!-- Триггер викторины -->
-<a-entity exhibit-point="pos: 15.712 1.200 -7.644; id: quiz_trigger" data-quest-trigger="quiz"></a-entity>
+<!-- Триггер викторины -->
+<a-entity position="15.712 1.200 -7.644" exhibit-point="pos: 15.712 1.200 -7.644; id: quiz_trigger" data-quest-trigger="quiz">
+  <a-box position="0 0.5 0" width="0.3" height="0.3" depth="0.3" color="#FFD700" 
+         animation="property: rotation; to: 0 360 0; loop: true; dur: 3000"></a-box>
+  <a-text value="НАЖМИ МЕНЯ" align="center" color="#FFD700" width="2" position="0 1 0"></a-text>
+</a-entity>
       
     </a-scene>
 
@@ -583,12 +588,7 @@ function registerQuestClick(questId) {
     showQuestMessage('🎉 Вы нашли все секреты!');
   }
   
-  if (window.questProgress.click1 && window.questProgress.click2) {
-    setTimeout(() => {
-      showQuestMessage('🏆 Поздравляем! Вы прошли все квесты!');
-      sendQuestStats();
-    }, 2000);
-  }
+
   
   localStorage.setItem('vrMuseumQuests', JSON.stringify(window.questProgress));
 }
