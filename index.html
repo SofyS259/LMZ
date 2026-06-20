@@ -8,7 +8,7 @@
 
     <script src="aframe.min.js"></script>
     <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
-    
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.5.1/dist/aframe-extras.min.js"></script>
     <style>
   #info-modal {
     display: none;
@@ -299,6 +299,13 @@
         <!--
       <a-entity gltf-model="url(enime.glb)" position="0 0 -5"></a-entity>
     -->
+      <a-entity 
+        id="bear"
+        gltf-model="url(bear.glb)"
+        position="5 0 -10"
+        class="clickable"
+        animation-mixer="clip: *; loop: once; timeScale: 1; startEvents: click">
+      </a-entity>
 
    
      
